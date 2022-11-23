@@ -26,6 +26,7 @@ $(LIBFT):
 clean:
 	@rm -rf obj
 	@echo "cleaning .o files"
+	make fclean -C libft
 
 fclean: clean
 	@rm -rf $(NAME)
