@@ -1,17 +1,4 @@
-# include <mlx.h> // MiniLibX
-# include <stdlib.h>
-#include <stdio.h> // printf
-#include "libft/libft.h" // libft
-#include <fcntl.h> // open
-
-# define KEY_ESC 65307
-# define BTN_X 17
-# define NO_EVENT 0L
-# define TRUE 1
-# define FALSE 0
-
-void			*mlx;
-void			*win;
+#include "cub3d.h"
 
 char *ft_strndup(char *str, int n)
 {
@@ -60,12 +47,15 @@ int valid_extension(char *map_name)
 	return (TRUE);
 }
 
-char	*load_map(char *map, int fd)
+char	**load_map(char *map_name)
 {
 	static char	buffer[2];
+	char		*map;
 	char		*ref;
 	int			n_read;
+	int			fd;
 
+	fd = open(map_name, O_RDONLY);
 	if (fd <= 0)
 		return (NULL);
 	map = ft_strdup("");
@@ -80,7 +70,7 @@ char	*load_map(char *map, int fd)
 		free(ref);
 	}
 	close(fd);
-	return (map);
+	return (ft_split(map, '\n'));
 }
 
 // TODO: THIS IS TRASH! NOT OK! PLEASE FIX ME! 
@@ -224,6 +214,7 @@ size_t	ft_arrlen(char **arr)
 	return (i);
 }
 
+// TODO: Fix this
 int surrounded_by_walls(char *map)
 {
 	int i;
@@ -233,6 +224,7 @@ int surrounded_by_walls(char *map)
 	i = 0;
 	while (map[i])
 	{
+		j = 0;
 		if (map[i] == 'N' || map[i] == 'S' || map[i] == 'E' || map[i] == 'W')
 			map[i] = '0';
 		i++;
@@ -277,112 +269,129 @@ int surrounded_by_walls(char *map)
 	return (TRUE);
 }
 
-int	has_invalid_characters(char *map)
+int	has_invalid_characters(char **map)
 {
-	while (*map)
-	{
-		map++;
-		if (!*map)
-			return (FALSE);
-		if (*map == ' ' || *map == '\n')
-			continue;
-		if (*map == '0' || *map == '1')
-			continue;
-		if (*map == 'N' || *map == 'S' || *map == 'E' || *map == 'W')
-			continue;
-		printf("Invalid character:(%c)\n", *map);
-		return (TRUE);
-	}
-	return (FALSE);
-}
+	int	i;
 
-int has_starting_position(char *map)
-{
 	while (*map)
 	{
-		if (*map == 'N' || *map == 'S' || *map == 'E' || *map == 'W')
-			return (TRUE);
+		i = 0;
+		while(*map[i])
+		{
+			if(ft_strchr("1NWES0 ", *map[i]) == NULL)
+				return(TRUE);
+			i++;
+		}
 		map++;
 	}
 	return (FALSE);
 }
 
-int	valid_map_tiles(char *map)
+int has_starting_position(char **map)
 {
-	if (has_invalid_characters(map))
+	int i;
+
+	while (*map)
 	{
-		printf("Contains invalid characters\n");
-		return(FALSE);
+		i = 0;
+		while(*map[i])
+		{
+			if(ft_strchr("NSEW", *map[i]) != NULL)
+				return(TRUE);
+		}
+		map++;
 	}
+	return (FALSE);
+}
+
+int	valid_map_tiles(char **map)
+{
 	if (!has_starting_position(map))
-	{
-		printf("Starting position not present\n");
-		return(FALSE);
-	}
-	if (!surrounded_by_walls(map))
-		return(FALSE);
+		return("Starting position not present");
+	if (has_invalid_characters(map))
+		return("Contains invalid characters");
+	if (!surrounded_by_walls(ft_strjoin(map, '\n')))
+		return("Not surrounded by walls");
 	return(TRUE);
 }
 
-int	has_errors(char *map)
+char *get_identifier(char *line)
 {
-	int	identifier_size;
+	if (strcmp(line,"NO ", 3) == 0)
+		return("NO");
+	if (strcmp(line,"SO ", 3) == 0)
+		return("SO");
+	if (strcmp(line,"WE ", 3) == 0)
+		return("WE");
+	if (strcmp(line,"EA ", 3) == 0)
+		return("EA");
+	if (strcmp(line,"F ", 3) == 0)
+		return("F");
+	if (strcmp(line,"C ", 3) == 0)
+		return("C");
+	return(NULL);
+}
 
-	// Check all identifiers
-	while(*map != '\0')
+int has_all_identifiers(char **map)
+{
+	static int NO;
+	static int SO;
+	static int WE;
+	static int EA;
+	static int F;
+	static int C;
+	char	*identifier;
+
+	while(map)
 	{
-		while (*map && *map == '\n')
-			map++;
-		// Exit the identifiers check when a map starts
-		if (*map == '1' || *map == ' ')
+		if (*map[0] == '1' || *map[0] == ' ')
 			break;
-		identifier_size = 0;
-		while(map[identifier_size] && map[identifier_size] != ' ')
-			identifier_size++;
-		if (identifier_size != 1 && identifier_size != 2)
-		{
-			printf("Idenfier size invalid\n");
-			return (TRUE);
-		}
-		if (identifier_size == 2)
-		{
-			if (invalid_texture(map))
-				return(TRUE);
-		}
-		if (identifier_size == 1)
-		{
-			if (invalid_color(map))
-			{
-				printf("Invalid color\n");
-				return(TRUE);
-			}
-		}
-		// Go to the end of the line
-		while (*map && *map != '\n')
-			map++;
+		identifier = get_identifier(*map);
+		if (strcmp(identifier,"NO", 2) == 0)
+			NO = TRUE;
+		if (strcmp(identifier,"SO", 2) == 0)
+			SO = TRUE;
+		if (strcmp(identifier,"WE", 2) == 0)
+			WE = TRUE;
+		if (strcmp(identifier,"EA", 2) == 0)
+			EA = TRUE;
+		if (strcmp(identifier,"F", 2) == 0)
+			F = TRUE;
+		if (strcmp(identifier,"C", 2) == 0)
+			C = TRUE;
+		map++;
 	}
-	if (any_identifier_missing())
+	return (NO && SO && WE && EA && F && C);
+}
+
+char	*check_map_errors(char **map)
+{
+	char		*identifier;
+	static int	identifiers_count;
+	char		**identifier_found;
+
+	if (!has_all_identifiers(map))
+		return("At least 1 identifier is missing");
+	while(map)
 	{
-		printf("At least 1 identifier is missing\n");
-		return (TRUE);
+		// Exit the identifiers check when a map starts
+		if (*map[0] == '1' || *map[0] == ' ')
+			break;
+		identifier = get_identifier(*map);
+		if (!identifier)
+			return("Invalid identifier");
+		identifiers_count++;
+		if (ft_strlen(identifier) == 2 && invalid_texture(*map))
+				return("Invalid texture");
+		if (ft_strlen(identifier) == 1 && invalid_color(*map))
+				return("Invalid color");
+		if (identifiers_count > 6)
+				return("Too many identifiers");
+		map++;
 	}
 	if (!valid_map_tiles(map))
 		return (TRUE);
-	return (FALSE);
-}
-
-int is_valid(char *map_name)
-{
-	char	*map;
-	if (!valid_extension(map_name))
-		return (FALSE);
-	map = load_map(map, open(map_name, O_RDONLY));
-	if (!map)
-		return (FALSE);
-	if (has_errors(map))
-		return (FALSE);
-	free(map);
-	return(TRUE);
+	return (NULL);
 }
 
 int exit_error(char *str)
@@ -392,19 +401,29 @@ int exit_error(char *str)
 	exit(1);
 }
 
+int run_game(t_game game)
+{
+	game.mlx = mlx_init();
+	game.win = mlx_new_window(game.mlx, 200, 200, "cub3D");
+	mlx_hook(game.win, BTN_X, NO_EVENT, close_game, NULL);
+	mlx_key_hook(game.win, key_hook, NULL);
+	mlx_loop(game.mlx);
+}
+
 int	main(int argc, char **argv)
 {
-	char *map_name;
+	t_game	game;
+	char	*map_error;
 
-	map_name = argv[1];
 	if (argc < 2)
 		exit_error("Please provide a map");
-	if(!is_valid(map_name))
-		exit_error("Invalid map");
-	mlx = mlx_init();
-	win = mlx_new_window(mlx, 200, 200, "cub3D");
-	mlx_hook(win, BTN_X, NO_EVENT, close_game, NULL);
-	mlx_key_hook(win, key_hook, NULL);
-	mlx_loop(mlx);
+	game.map_name = argv[1];
+	if (!valid_extension(game.map_name))
+		exit_error("Invalid map extension");
+	game.map  = load_map(game.map_name);
+	map_error = check_map_errors(game.map);
+	if (map_error)
+		exit_map_error(game);
+	run_game(game);
 	return (0);
 }
