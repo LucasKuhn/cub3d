@@ -1,7 +1,7 @@
-NO errors
-SO errors
-WE errors
-EA errors
+NO ./teste.txt
+SO ./teste.txt
+WE ./teste.txt
+EA ./teste.txt
 
 F 0,0,0
-C 225,30,0
+C 255,30,0

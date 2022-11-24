@@ -109,10 +109,16 @@ int	invalid_color(char *map)
 	while (colors[i] != NULL)
 	{
 		if (i > 2)
+		{
+			printf("Too many colors\n");
 			return (TRUE);
+		}
 		num = ft_atoi(colors[i]);
 		if (num < 0 || num > 255)
+		{
+			printf("Invalid color '%d'\n", num);
 			return (TRUE);
+		}
 		i++;
 	}
 	free_matrix(colors);
@@ -124,22 +130,30 @@ int	invalid_texture(char *map)
 {
 	char	*copy;
 	int		file_name_size;
+	int		fd;
 
 	file_name_size = 0;
 	if (ft_strncmp(map, "NO", 2) != 0 && ft_strncmp(map, "SO", 2) != 0
 		&& ft_strncmp(map, "WE", 2) != 0 && ft_strncmp(map, "EA", 2) != 0)
+	{
+		printf("Invalid identifier\n");
 		return (TRUE);
+	}
 	map += 2;
 	while (*map == ' ')
 		map++;
 	while (map[file_name_size] && map[file_name_size] != '\n')
 		file_name_size++;
 	copy = ft_strndup(map, file_name_size + 1);
-	if (open(copy, O_RDONLY) < 0)
+	fd = open(copy, O_RDONLY);
+	if (fd < 0)
 	{
+		printf("Error on texture '%s'\n", copy);
+		close(fd);
 		free(copy);
 		return (TRUE);
 	}
+	close(fd);
 	free(copy);
 	return (FALSE);
 }
@@ -152,21 +166,30 @@ int	has_errors(char *map)
 	{
 		while (*map && *map == '\n')
 			map++;
+		if (!*map)
+			break;
 		identifier_size = 0;
 		while(map[identifier_size] && map[identifier_size] != ' ')
 			identifier_size++;
 		if (identifier_size != 1 && identifier_size != 2)
+		{
+			printf("Idenfier size invalid\n");
 			return (TRUE);
+		}
 		if (identifier_size == 2)
 		{
 			if (invalid_texture(map))
-				return (TRUE);
+				return(TRUE);
 		}
 		if (identifier_size == 1)
 		{
 			if (invalid_color(map))
-				return (TRUE);
+			{
+				printf("Invalid color\n");
+				return(TRUE);
+			}
 		}
+		// Go to the end of the line
 		while (*map && *map != '\n')
 			map++;
 	}
@@ -187,17 +210,22 @@ int is_valid(char *map_name)
 	return(TRUE);
 }
 
+int exit_error(char *str)
+{
+	printf("Error\n");
+	printf("%s\n", str);
+	exit(1);
+}
+
 int	main(int argc, char **argv)
 {
 	char *map_name;
 
 	map_name = argv[1];
-
-	if (argc < 2 || !is_valid(map_name))
-	{
-		printf("Invalid map: %s\n", map_name);
-		exit(1);
-	}
+	if (argc < 2)
+		exit_error("Please provide a map");
+	if(!is_valid(map_name))
+		exit_error("Invalid map");
 	mlx = mlx_init();
 	win = mlx_new_window(mlx, 200, 200, "cub3D");
 	mlx_hook(win, BTN_X, NO_EVENT, close_game, NULL);
