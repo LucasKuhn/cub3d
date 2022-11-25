@@ -276,9 +276,9 @@ int	has_invalid_characters(char **map)
 	while (*map)
 	{
 		i = 0;
-		while(*map[i])
+		while((*map)[i])
 		{
-			if(ft_strchr("1NWES0 ", *map[i]) == NULL)
+			if(ft_strchr("1NWES0 ", (*map)[i]) == NULL)
 				return(TRUE);
 			i++;
 		}
@@ -293,11 +293,13 @@ int has_starting_position(char **map)
 
 	while (*map)
 	{
+
 		i = 0;
-		while(*map[i])
+		while((*map)[i])
 		{
-			if(ft_strchr("NSEW", *map[i]) != NULL)
+			if(ft_strchr("NSEW", (*map)[i]) != NULL)
 				return(TRUE);
+			i++;
 		}
 		map++;
 	}
@@ -306,17 +308,17 @@ int has_starting_position(char **map)
 
 char *get_identifier(char *line)
 {
-	if (strcmp(line,"NO ", 3) == 0)
+	if (ft_strncmp(line,"NO ", 3) == 0)
 		return("NO");
-	if (strcmp(line,"SO ", 3) == 0)
+	if (ft_strncmp(line,"SO ", 3) == 0)
 		return("SO");
-	if (strcmp(line,"WE ", 3) == 0)
+	if (ft_strncmp(line,"WE ", 3) == 0)
 		return("WE");
-	if (strcmp(line,"EA ", 3) == 0)
+	if (ft_strncmp(line,"EA ", 3) == 0)
 		return("EA");
-	if (strcmp(line,"F ", 3) == 0)
+	if (ft_strncmp(line,"F ", 2) == 0)
 		return("F");
-	if (strcmp(line,"C ", 3) == 0)
+	if (ft_strncmp(line,"C ", 2) == 0)
 		return("C");
 	return(NULL);
 }
@@ -331,22 +333,22 @@ int has_all_identifiers(char **map)
 	static int C;
 	char	*identifier;
 
-	while(map)
+	while(*map)
 	{
 		if (*map[0] == '1' || *map[0] == ' ')
 			break;
 		identifier = get_identifier(*map);
-		if (strcmp(identifier,"NO", 2) == 0)
+		if (ft_strncmp(identifier,"NO", 2) == 0)
 			NO = TRUE;
-		if (strcmp(identifier,"SO", 2) == 0)
+		if (ft_strncmp(identifier,"SO", 2) == 0)
 			SO = TRUE;
-		if (strcmp(identifier,"WE", 2) == 0)
+		if (ft_strncmp(identifier,"WE", 2) == 0)
 			WE = TRUE;
-		if (strcmp(identifier,"EA", 2) == 0)
+		if (ft_strncmp(identifier,"EA", 2) == 0)
 			EA = TRUE;
-		if (strcmp(identifier,"F", 2) == 0)
+		if (ft_strncmp(identifier,"F", 2) == 0)
 			F = TRUE;
-		if (strcmp(identifier,"C", 2) == 0)
+		if (ft_strncmp(identifier,"C", 2) == 0)
 			C = TRUE;
 		map++;
 	}
@@ -384,8 +386,8 @@ char	*get_map_error(char **map)
 		return("Starting position not present");
 	if (has_invalid_characters(map))
 		return("Contains invalid characters");
-	if (!surrounded_by_walls(ft_strjoin(map, '\n')))
-		return("Not surrounded by walls");
+	// if (!surrounded_by_walls(ft_strjoin(map, '\n')))
+	// 	return("Not surrounded by walls");
 	return (NULL);
 }
 
