@@ -304,17 +304,6 @@ int has_starting_position(char **map)
 	return (FALSE);
 }
 
-int	valid_map_tiles(char **map)
-{
-	if (!has_starting_position(map))
-		return("Starting position not present");
-	if (has_invalid_characters(map))
-		return("Contains invalid characters");
-	if (!surrounded_by_walls(ft_strjoin(map, '\n')))
-		return("Not surrounded by walls");
-	return(TRUE);
-}
-
 char *get_identifier(char *line)
 {
 	if (strcmp(line,"NO ", 3) == 0)
@@ -364,7 +353,12 @@ int has_all_identifiers(char **map)
 	return (NO && SO && WE && EA && F && C);
 }
 
-char	*check_map_errors(char **map)
+int is_map_start(char *map_line)
+{
+	return(map_line[0] == '1' || map_line[0] == ' ');
+}
+
+char	*get_map_error(char **map)
 {
 	char		*identifier;
 	static int	identifiers_count;
@@ -372,11 +366,8 @@ char	*check_map_errors(char **map)
 
 	if (!has_all_identifiers(map))
 		return("At least 1 identifier is missing");
-	while(map)
+	while(*map && !is_map_start(*map))
 	{
-		// Exit the identifiers check when a map starts
-		if (*map[0] == '1' || *map[0] == ' ')
-			break;
 		identifier = get_identifier(*map);
 		if (!identifier)
 			return("Invalid identifier");
@@ -389,8 +380,12 @@ char	*check_map_errors(char **map)
 				return("Too many identifiers");
 		map++;
 	}
-	if (!valid_map_tiles(map))
-		return (TRUE);
+	if (!has_starting_position(map))
+		return("Starting position not present");
+	if (has_invalid_characters(map))
+		return("Contains invalid characters");
+	if (!surrounded_by_walls(ft_strjoin(map, '\n')))
+		return("Not surrounded by walls");
 	return (NULL);
 }
 
@@ -421,9 +416,12 @@ int	main(int argc, char **argv)
 	if (!valid_extension(game.map_name))
 		exit_error("Invalid map extension");
 	game.map  = load_map(game.map_name);
-	map_error = check_map_errors(game.map);
+	map_error = get_map_error(game.map);
 	if (map_error)
-		exit_map_error(game);
+	{
+		// todo: Free the map
+		exit_error(map_error);
+	}
 	run_game(game);
 	return (0);
 }
