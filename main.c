@@ -22,18 +22,18 @@ void	free_matrix(char **ptr)
 	free(ptr);
 }
 
-int	close_game()
+int	close_game(t_game *game)
 {
-	mlx_destroy_window(mlx, win);
-	mlx_destroy_display(mlx);
-	free(mlx);
+	mlx_destroy_window(game->mlx, game->win);
+	mlx_destroy_display(game->mlx);
+	free(game->mlx);
 	exit(0);
 }
 
-int key_hook(int keycode)
+int key_hook(int keycode, t_game *game)
 {
 	if (keycode == KEY_ESC)
-		close_game();
+		close_game(game);
 	return (0);
 }
 
@@ -400,7 +400,7 @@ int run_game(t_game game)
 {
 	game.mlx = mlx_init();
 	game.win = mlx_new_window(game.mlx, 200, 200, "cub3D");
-	mlx_hook(game.win, BTN_X, NO_EVENT, close_game, NULL);
+	mlx_hook(game.win, BTN_X, NO_EVENT, close_game, &game);
 	mlx_key_hook(game.win, key_hook, NULL);
 	mlx_loop(game.mlx);
 }
