@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2022/11/24 18:04:30 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2022/11/28 21:55:10 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,24 @@
 # include "libft/libft.h" // libft
 # include <fcntl.h> // open
 
+# define RED 0xFF0000
+# define GREEN 0x00FF00
+# define LEFT_ARROW 65361
+# define RIGHT_ARROW 65363
+# define W_KEY 119
+# define A_KEY 97
+# define S_KEY 115
+# define D_KEY 100
 # define KEY_ESC 65307
+
 # define BTN_X 17
 # define NO_EVENT 0L
+
 # define TRUE 1
 # define FALSE 0
+
+# define WIDTH 1080
+# define HEIGHT 560
 
 typedef enum e_identifiers
 {
@@ -35,12 +48,28 @@ typedef enum e_identifiers
 	F
 }			t_identifiers;
 
+typedef struct s_vector {
+	int	x;
+	int	y;
+}				t_vector;
+
+typedef struct s_image {
+	void		*ptr;
+	char		*pixels;
+	t_vector	size;
+	int			bits;
+	int			line_size;
+	int			endian;
+}				t_image;
+
 typedef struct s_game
 {
 	void			*mlx;
 	void			*win;
 	char			*map_name;
 	char			**map;
-}	t_game;
+	t_image			ground;
+	t_image			ceiling;
+}				t_game;
 
 #endif
