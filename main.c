@@ -168,41 +168,6 @@ int	invalid_texture(char *map)
 	return (FALSE);
 }
 
-int any_identifier_missing(void)
-{
-	if (found_NO == FALSE)
-	{
-		printf("Missing NO\n");
-		return (TRUE);
-	}
-	if (found_SO == FALSE)
-	{
-		printf("Missing SO\n");
-		return (TRUE);
-	}
-	if (found_WE == FALSE)
-	{
-		printf("Missing WE\n");
-		return (TRUE);
-	}
-	if (found_EA == FALSE)
-	{
-		printf("Missing EA\n");
-		return (TRUE);
-	}
-	if (found_F == FALSE)
-	{
-		printf("Missing F\n");
-		return (TRUE);
-	}
-	if (found_C == FALSE)
-	{
-		printf("Missing C\n");
-		return (TRUE);
-	}
-	return (FALSE);
-}
-
 // TODO: Move this to utils 
 size_t	ft_arrlen(char **arr)
 {
@@ -215,7 +180,7 @@ size_t	ft_arrlen(char **arr)
 }
 
 // TODO: Fix this
-int surrounded_by_walls(char *map)
+int surrounded_by_walls(char **map)
 {
 	int i;
 	int j;
@@ -225,47 +190,51 @@ int surrounded_by_walls(char *map)
 	while (map[i])
 	{
 		j = 0;
-		if (map[i] == 'N' || map[i] == 'S' || map[i] == 'E' || map[i] == 'W')
-			map[i] = '0';
+		while(map[i][j])
+		{
+			if(ft_strchr("NSEW", map[i][j]) != NULL)
+				map[i][j] = '0';
+			j++;
+		}
 		i++;
 	}
 	// Turn map into matrix 
-	char **array;
-	array = ft_split(map, '\n');
-	int last_line = ft_arrlen(array) - 1;
+	int last_line = ft_arrlen(map) - 1;
 	// Iterate matrix and check if every 0 is surrounded by other 0 or 1
 	i = 0;
-	while (array[i])
+	while (map[i])
 	{
 		j = 0;
-		while (array[i][j])
+		while (map[i][j])
 		{
-			if (array[i][j] == '0')
+			if (map[i][j] == '0')
 			{
+				printf("Found 0 on [%d][%d]\n", i, j);
 				// Can't have a 0 on the first line or the last line
 				if (i == 0 || i == last_line)
 					return (FALSE);
 				// Can't have an open space to the right
-				if (array[i][j + 1] != '1' && array[i][j + 1] != '0')
+				if (map[i][j + 1] != '1' && map[i][j + 1] != '0')
 					return (FALSE);
 				// Can't have an open space to the left
-				if (array[i][j - 1] != '1' && array[i][j - 1] != '0')
+				if (map[i][j - 1] != '1' && map[i][j - 1] != '0')
 					return (FALSE);
 				// Can't have an open space above
-				if (ft_strlen(array[i - 1]) < i)
+				if (ft_strlen(map[i - 1]) < i)
 					return (FALSE);
-				if (array[i - 1][j] != '1' && array[i - 1][j] != '0')
+				if (map[i - 1][j] != '1' && map[i - 1][j] != '0')
 					return (FALSE);
 				// Can't have an open space below
-				if (ft_strlen(array[i + 1]) < i)
+				if (ft_strlen(map[i + 1]) < i)
 					return (FALSE);
-				if (array[i + 1][j] != '1' && array[i + 1][j] != '0')
+				if (map[i + 1][j] != '1' && map[i + 1][j] != '0')
 					return (FALSE);
 			}
 			j++;
 		}
 		i++;
 	}
+	// TODO: Reload map, since we changed the original
 	return (TRUE);
 }
 
@@ -386,8 +355,8 @@ char	*get_map_error(char **map)
 		return("Starting position not present");
 	if (has_invalid_characters(map))
 		return("Contains invalid characters");
-	// if (!surrounded_by_walls(ft_strjoin(map, '\n')))
-	// 	return("Not surrounded by walls");
+	if (!surrounded_by_walls(map))
+		return("Not surrounded by walls");
 	return (NULL);
 }
 
