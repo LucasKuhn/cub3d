@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "./include/cub3d.h"
 
 char *ft_strndup(char *str, int n)
 {
@@ -28,12 +28,25 @@ int	close_game(t_game *game)
 	mlx_destroy_display(game->mlx);
 	free(game->mlx);
 	exit(0);
+	return (0);
 }
 
 int key_hook(int keycode, t_game *game)
 {
 	if (keycode == KEY_ESC)
 		close_game(game);
+	if (keycode == LEFT_ARROW)
+		return (0);
+	if (keycode == RIGHT_ARROW)
+		return (0);
+	if (keycode == W_KEY)
+		return (0);
+	if (keycode == A_KEY)
+		return (0);
+	if (keycode == S_KEY)
+		return (0);
+	if (keycode == D_KEY)
+		return (0);
 	return (0);
 }
 
@@ -73,7 +86,7 @@ char	**load_map(char *map_name)
 	return (ft_split(map, '\n'));
 }
 
-// TODO: THIS IS TRASH! NOT OK! PLEASE FIX ME! 
+// TODO: THIS IS TRASH! NOT OK! PLEASE FIX ME!
 int found_NO = FALSE;
 int found_SO = FALSE;
 int found_WE = FALSE;
@@ -168,7 +181,7 @@ int	invalid_texture(char *map)
 	return (FALSE);
 }
 
-// TODO: Move this to utils 
+// TODO: Move this to utils
 size_t	ft_arrlen(char **arr)
 {
 	size_t	i;
@@ -198,7 +211,7 @@ int surrounded_by_walls(char **map)
 		}
 		i++;
 	}
-	// Turn map into matrix 
+	// Turn map into matrix
 	int last_line = ft_arrlen(map) - 1;
 	// Iterate matrix and check if every 0 is surrounded by other 0 or 1
 	i = 0;
@@ -209,7 +222,7 @@ int surrounded_by_walls(char **map)
 		{
 			if (map[i][j] == '0')
 			{
-				printf("Found 0 on [%d][%d]\n", i, j);
+				/* printf("Found 0 on [%d][%d]\n", i, j); */
 				// Can't have a 0 on the first line or the last line
 				if (i == 0 || i == last_line)
 					return (FALSE);
@@ -367,13 +380,28 @@ int exit_error(char *str)
 	exit(1);
 }
 
+t_image	new_image(t_game *game, char *path)
+{
+	t_image	img;
+
+	img.ptr = mlx_xpm_file_to_image(game->mlx, path, &img.size.x, &img.size.y);
+	img.pixels = mlx_get_data_addr(img.ptr, &img.bits, &img.line_size,
+			&img.endian);
+	return (img);
+}
+
 int run_game(t_game game)
 {
 	game.mlx = mlx_init();
-	game.win = mlx_new_window(game.mlx, 200, 200, "cub3D");
+	game.win = mlx_new_window(game.mlx, WIDTH, HEIGHT, "cub3D");
 	mlx_hook(game.win, BTN_X, NO_EVENT, close_game, &game);
-	mlx_key_hook(game.win, key_hook, NULL);
+	mlx_key_hook(game.win, key_hook, &game);
+	game.ground = new_image(&game, "./images/ground.xpm");
+	game.ceiling = new_image(&game, "./images/ceiling.xpm");
+	mlx_put_image_to_window(game.mlx, game.win, game.ceiling.ptr, 0, 0);
+	mlx_put_image_to_window(game.mlx, game.win, game.ground.ptr, 0, HEIGHT/2);
 	mlx_loop(game.mlx);
+	return (0);
 }
 
 int	main(int argc, char **argv)

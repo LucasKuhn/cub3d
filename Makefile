@@ -12,10 +12,10 @@ endif
 all: $(NAME)
 
 $(OBJ_DIR)/%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I ./
+	$(CC) -g $(CFLAGS) -c $< -o $@ -I ./
 
 $(NAME): $(OBJ_DIR) $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(MLXFLAGS) $(LIBFT_FLAGS) -o $(NAME)
+	$(CC) -g $(CFLAGS) $(OBJS) $(MLXFLAGS) $(LIBFT_FLAGS) -o $(NAME)
 
 $(OBJ_DIR):
 	mkdir -p obj
