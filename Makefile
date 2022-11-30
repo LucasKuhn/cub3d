@@ -1,6 +1,6 @@
 NAME		=	cub3D
 MLXFLAGS	=	-lmlx -Ilmlx -lXext -lX11
-SRCS		=	main.c
+SRCS		=	main.c draw_minimap.c
 OBJ_DIR		=	obj
 OBJS		=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 LIBFT		=	libft/libft.a

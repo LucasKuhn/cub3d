@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2022/11/28 21:55:10 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/11/30 17:34:15 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h> // printf
 # include "libft/libft.h" // libft
 # include <fcntl.h> // open
+# include <math.h> // math
 
 # define RED 0xFF0000
 # define GREEN 0x00FF00
@@ -37,6 +38,11 @@
 
 # define WIDTH 1080
 # define HEIGHT 560
+
+# define TURNING_SPEED 10
+# define MOVING_SPEED 5
+
+#define DEG_TO_RAD( n ) ( n * (M_PI/180.0) )
 
 typedef enum e_identifiers
 {
@@ -68,8 +74,13 @@ typedef struct s_game
 	void			*win;
 	char			*map_name;
 	char			**map;
+	t_vector		player;
+	int				player_direction;
+	double			direction_in_radian;
 	t_image			ground;
 	t_image			ceiling;
 }				t_game;
+
+void	draw_minimap(t_game *game);
 
 #endif
