@@ -32,21 +32,53 @@ int	close_game(t_game *game)
 }
 
 int key_hook(int keycode, t_game *game)
-{
+{	
+	double x_component = cos(game->direction_in_radian) * MOVING_SPEED;
+	double y_component = sin(game->direction_in_radian) * MOVING_SPEED;
+
 	if (keycode == KEY_ESC)
 		close_game(game);
 	if (keycode == LEFT_ARROW)
-		return (0);
+	{
+		game->player_direction += TURNING_SPEED;
+		if (game->player_direction > 360)
+			game->player_direction = 0;
+		game->direction_in_radian = DEG_TO_RAD(game->player_direction);
+	}
 	if (keycode == RIGHT_ARROW)
-		return (0);
+	{
+		game->player_direction -= TURNING_SPEED;
+		if (game->player_direction < 0)
+			game->player_direction = 360;
+		game->direction_in_radian = DEG_TO_RAD(game->player_direction);
+	}
 	if (keycode == W_KEY)
-		return (0);
-	if (keycode == A_KEY)
-		return (0);
+	{
+		game->player.y -= 1 * y_component;
+		game->player.x += 1 * x_component;
+	}
 	if (keycode == S_KEY)
-		return (0);
+	{
+		game->player.y += 1 * y_component;
+		game->player.x -= 1 * x_component;
+	}
+	if (keycode == A_KEY)
+	{
+		double rad = game->direction_in_radian + (M_PI / 2);
+		x_component = cos(rad) * MOVING_SPEED;
+		y_component = sin(rad) * MOVING_SPEED;
+		game->player.y -= 1 * y_component;
+		game->player.x += 1 * x_component;
+	}
 	if (keycode == D_KEY)
-		return (0);
+	{
+		double rad = game->direction_in_radian - (M_PI / 2);
+		x_component = cos(rad) * MOVING_SPEED;
+		y_component = sin(rad) * MOVING_SPEED;
+		game->player.y -= 1 * y_component;
+		game->player.x += 1 * x_component;
+	}
+	draw_minimap(game);
 	return (0);
 }
 
@@ -395,13 +427,52 @@ int run_game(t_game game)
 	game.mlx = mlx_init();
 	game.win = mlx_new_window(game.mlx, WIDTH, HEIGHT, "cub3D");
 	mlx_hook(game.win, BTN_X, NO_EVENT, close_game, &game);
-	mlx_key_hook(game.win, key_hook, &game);
+	mlx_hook(game.win, 02, 1L<<0, key_hook, &game);
 	game.ground = new_image(&game, "./images/ground.xpm");
 	game.ceiling = new_image(&game, "./images/ceiling.xpm");
 	mlx_put_image_to_window(game.mlx, game.win, game.ceiling.ptr, 0, 0);
 	mlx_put_image_to_window(game.mlx, game.win, game.ground.ptr, 0, HEIGHT/2);
+	draw_minimap(&game);
 	mlx_loop(game.mlx);
 	return (0);
+}
+
+t_vector find_player(t_game	*game)
+{
+	t_vector	player;
+	int			i;
+	int			j;
+
+	char **map = game->map;
+	// skip texture lines
+	while (*map[0] != ' ' && *map[0] != '1')
+		map++;
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] == 'N')
+				game->player_direction = 90;
+			if (map[i][j] == 'E')
+				game->player_direction = 0;
+			if (map[i][j] == 'S')
+				game->player_direction = 270;
+			if (map[i][j] == 'W')
+				game->player_direction = 180;
+			if (ft_strchr("NSEW", map[i][j]))
+			{
+				game->direction_in_radian = game->player_direction * (M_PI / 180.0);
+				player.x = j * MOVING_SPEED;
+				player.y = i * MOVING_SPEED;
+				return (player);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (player);
 }
 
 int	main(int argc, char **argv)
@@ -415,6 +486,9 @@ int	main(int argc, char **argv)
 	if (!valid_extension(game.map_name))
 		exit_error("Invalid map extension");
 	game.map  = load_map(game.map_name);
+	game.player = find_player(&game);
+	printf("player.x = %d\n", game.player.x);
+	printf("player.y = %d\n", game.player.y);
 	map_error = get_map_error(game.map);
 	if (map_error)
 	{
