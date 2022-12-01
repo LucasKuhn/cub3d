@@ -22,11 +22,65 @@ void draw_space(t_game *game, int x, int y)
 	mlx_put_image_to_window(game->mlx, game->win, texture, x, y);
 }
 
+void draw_player(t_game *game)
+{
+	int x;
+	int y;
+
+	static void *texture;
+
+	if (!texture)
+		texture = mlx_xpm_file_to_image(game->mlx, "./images/yellow3x3.xpm", &x, &y);
+	mlx_put_image_to_window(game->mlx, game->win, texture, game->player.x, game->player.y);
+}
+
+void draw_direction(t_game *game)
+{
+	int x;
+	int y;
+
+	static void *texture;
+
+	if (!texture)
+		texture = mlx_xpm_file_to_image(game->mlx, "./images/white.xpm", &x, &y);
+
+	int i = 0;
+	double d_x = 0;
+	double d_y = 0;
+	while (i < 10)
+	{
+		d_x += cos(game->direction_in_radian);
+		d_y += sin(game->direction_in_radian);
+		// mlx_put_image_to_window(game->mlx, game->win, texture, game->player.x + x, game->player.y - y);
+		mlx_pixel_put(game->mlx, game->win, game->player.x + d_x, game->player.y - d_y, 0x00FFFFFF);
+		i++;
+	}
+}
+
+
+void raycast(t_game *game)
+{
+	int hit = 0;
+
+	double x = game->player.x;
+	double y = game->player.y;
+	double x_component = cos(game->direction_in_radian);
+	double y_component = sin(game->direction_in_radian) * -1;
+
+	while (!hit && x > 0 && x < WIDTH && y > 0 && y < HEIGHT)
+	{
+		x += x_component;
+		y += y_component;
+		if (game->map[(int)(y/10)][(int)(x/10)] == '1')
+			hit = 1;
+		mlx_pixel_put(game->mlx, game->win, x, y, 0x00FF0000);
+	}
+}
+
 void draw_minimap(t_game *game)
 {
 	char *map_line;	
 	int x, y;
-
 
 	// skip texture lines
 	while (*(game->map)[0] != ' ' && *(game->map)[0] != '1')
@@ -45,15 +99,8 @@ void draw_minimap(t_game *game)
 		}
 		y++;
 	}
-	void	*player = mlx_xpm_file_to_image(game->mlx, "./images/yellow3x3.xpm", &x, &y);
-	mlx_put_image_to_window(game->mlx, game->win, player, game->player.x, game->player.y);
 
-	// THIS IS UGLY 🤮
-	double x_component = cos(game->direction_in_radian);
-	double y_component = sin(game->direction_in_radian);
-
-	void	*cross = mlx_xpm_file_to_image(game->mlx, "./images/white.xpm", &x, &y);
-	int cross_x = game->player.x + (x_component * 10);
-	int cross_y = game->player.y - (y_component * 10);
-	mlx_put_image_to_window(game->mlx, game->win, cross, cross_x, cross_y);
+	draw_player(game);
+	draw_direction(game);
+	raycast(game);
 }
