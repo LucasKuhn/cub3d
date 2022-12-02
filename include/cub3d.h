@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2022/11/30 17:34:15 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:33:20 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@
 
 # define TURNING_SPEED 10
 # define MOVING_SPEED 5
+
+# define ONE_RAD 0.0174533
 
 #define DEG_TO_RAD( n ) ( n * (M_PI/180.0) )
 

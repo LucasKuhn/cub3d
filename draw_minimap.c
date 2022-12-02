@@ -60,26 +60,37 @@ void draw_direction(t_game *game)
 
 void raycast(t_game *game)
 {
-	int hit = 0;
+	int		hit = 0;
+	int		n_rays = 0;
+	double x_component;
+	double y_component;
+	double x;
+	double y;
+	double direction = game->direction_in_radian - -(30 * ONE_RAD);
 
-	double x = game->player.x;
-	double y = game->player.y;
-	double x_component = cos(game->direction_in_radian);
-	double y_component = sin(game->direction_in_radian) * -1;
-
-	while (!hit && x > 0 && x < WIDTH && y > 0 && y < HEIGHT)
+	while (n_rays < 40)
 	{
-		x += x_component;
-		y += y_component;
-		if (game->map[(int)(y/10)][(int)(x/10)] == '1')
-			hit = 1;
-		mlx_pixel_put(game->mlx, game->win, x, y, 0x00FF0000);
+		x_component = cos(direction);
+		y_component = sin(direction) * -1;
+		x = game->player.x + 1.5;
+		y = game->player.y + 1.5;
+		hit = 0;
+		while (!hit && x > 0 && x < WIDTH && y > 0 && y < HEIGHT)
+		{
+			x += x_component;
+			y += y_component;
+			if (game->map[(int)(y/10)][(int)(x/10)] == '1')
+				hit = 1;
+			mlx_pixel_put(game->mlx, game->win, x, y, 0x00FF0000);
+		}
+		n_rays++;
+		direction += 2 * ONE_RAD;
 	}
 }
 
 void draw_minimap(t_game *game)
 {
-	char *map_line;	
+	char *map_line;
 	int x, y;
 
 	// skip texture lines
@@ -101,6 +112,6 @@ void draw_minimap(t_game *game)
 	}
 
 	draw_player(game);
-	draw_direction(game);
+	/* draw_direction(game); */
 	raycast(game);
 }
