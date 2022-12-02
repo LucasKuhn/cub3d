@@ -65,16 +65,16 @@ int key_hook(int keycode, t_game *game)
 	if (keycode == A_KEY)
 	{
 		double rad = game->direction_in_radian + (M_PI / 2);
-		x_component = cos(rad) * MOVING_SPEED;
-		y_component = sin(rad) * MOVING_SPEED;
+		x_component = cos(rad) * (MOVING_SPEED / 2);
+		y_component = sin(rad) * (MOVING_SPEED / 2);
 		game->player.y -= 1 * y_component;
 		game->player.x += 1 * x_component;
 	}
 	if (keycode == D_KEY)
 	{
 		double rad = game->direction_in_radian - (M_PI / 2);
-		x_component = cos(rad) * MOVING_SPEED;
-		y_component = sin(rad) * MOVING_SPEED;
+		x_component = cos(rad) * (MOVING_SPEED / 2);
+		y_component = sin(rad) * (MOVING_SPEED / 2);
 		game->player.y -= 1 * y_component;
 		game->player.x += 1 * x_component;
 	}
@@ -487,8 +487,6 @@ int	main(int argc, char **argv)
 		exit_error("Invalid map extension");
 	game.map  = load_map(game.map_name);
 	game.player = find_player(&game);
-	printf("player.x = %d\n", game.player.x);
-	printf("player.y = %d\n", game.player.y);
 	map_error = get_map_error(game.map);
 	if (map_error)
 	{
