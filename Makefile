@@ -15,7 +15,7 @@ $(OBJ_DIR)/%.o: %.c
 	$(CC) -g $(CFLAGS) -c $< -o $@ -I ./
 
 $(NAME): $(OBJ_DIR) $(OBJS) $(LIBFT)
-	$(CC) -g $(CFLAGS) $(OBJS) $(MLXFLAGS) $(LIBFT_FLAGS) -o $(NAME)
+	$(CC) -g $(CFLAGS) $(OBJS) $(MLXFLAGS) $(LIBFT_FLAGS) -lm -o $(NAME)
 
 $(OBJ_DIR):
 	mkdir -p obj
