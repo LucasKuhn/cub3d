@@ -19,7 +19,7 @@ void draw_space(t_game *game, int x, int y)
 
 	if (!texture)
 		texture = mlx_xpm_file_to_image(game->mlx, "./images/black10.xpm", &i, &j);
-	mlx_put_image_to_window(game->mlx, game->win, texture, x, y);
+	// mlx_put_image_to_window(game->mlx, game->win, texture, x, y);
 }
 
 void draw_player(t_game *game)
@@ -49,16 +49,40 @@ void draw_direction(t_game *game)
 	double d_y = 0;
 	while (i < 10)
 	{
-		d_x += cos(game->direction_in_radian);
-		d_y += sin(game->direction_in_radian);
+		d_x += cos(game->direction_in_radian + M_PI);
+		d_y += sin(game->direction_in_radian + M_PI);
 		// mlx_put_image_to_window(game->mlx, game->win, texture, game->player.x + x, game->player.y - y);
 		mlx_pixel_put(game->mlx, game->win, game->player.x + d_x, game->player.y - d_y, 0x00FFFFFF);
 		i++;
 	}
 }
 
+void draw_3d(double rays[60], t_game *game)
+{
+	int n_rays = 0;
+	mlx_put_image_to_window(game->mlx, game->win, game->ground.ptr, 0, HEIGHT/2);
 
-void raycast(t_game *game)
+	while (n_rays < 60)
+	{
+		int vertical_offset   = n_rays * WIDTH / 60;
+		int horizontal_offset = (HEIGHT / 2) - (3000 / rays[n_rays] / 2);
+		
+		int column_width = 0;
+		while (column_width < WIDTH / 60)
+		{
+			int column_height = 0;
+			while (column_height <  (3000 / rays[n_rays]))
+			{
+				mlx_pixel_put(game->mlx, game->win, column_width + vertical_offset, column_height + horizontal_offset, 0x00000000);
+				column_height++;
+			}
+			column_width++;
+		}
+		n_rays++;
+	}
+}
+
+void draw_fov(t_game *game)
 {
 	int		hit = 0;
 	int		n_rays = 0;
@@ -66,9 +90,11 @@ void raycast(t_game *game)
 	double y_component;
 	double x;
 	double y;
-	double direction = game->direction_in_radian - -(30 * ONE_RAD);
+	double direction = game->direction_in_radian + (30 * ONE_RAD);
+	
+	double rays[60] = {0};
 
-	while (n_rays < 40)
+	while (n_rays < 60)
 	{
 		x_component = cos(direction);
 		y_component = sin(direction) * -1;
@@ -79,13 +105,24 @@ void raycast(t_game *game)
 		{
 			x += x_component;
 			y += y_component;
+			rays[n_rays] += sqrt(pow(x_component, 2) + pow(y_component, 2));
+			mlx_pixel_put(game->mlx, game->win, x, y, 0x00FFBD2D);
 			if (game->map[(int)(y/10)][(int)(x/10)] == '1')
 				hit = 1;
-			mlx_pixel_put(game->mlx, game->win, x, y, 0x00FF0000);
 		}
 		n_rays++;
-		direction += 2 * ONE_RAD;
+		direction -= ONE_RAD;
 	}
+
+	// print rays to console for debugging
+	int i = 0;
+	printf("---Rays---\n");
+	while (i < 60)
+	{
+		printf("Ray[%d]=%f\n", i, rays[i]);
+		i++;
+	}
+	draw_3d(rays, game);
 }
 
 void draw_minimap(t_game *game)
@@ -112,6 +149,6 @@ void draw_minimap(t_game *game)
 	}
 
 	draw_player(game);
-	/* draw_direction(game); */
-	raycast(game);
+	draw_fov(game);
+	draw_direction(game);
 }

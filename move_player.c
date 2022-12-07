@@ -1,0 +1,44 @@
+#include "./include/cub3d.h"
+
+void move_player(int keycode, t_game *game)
+{
+	double x_component = cos(game->direction_in_radian) * MOVING_SPEED;
+	double y_component = sin(game->direction_in_radian) * MOVING_SPEED;
+
+	int new_player_x;
+	int new_player_y;
+	 
+	if (keycode == W_KEY)
+	{
+		new_player_y = game->player.y - 1 * y_component;
+		new_player_x = game->player.x + 1 * x_component;
+	}
+	if (keycode == S_KEY)
+	{
+		new_player_y = game->player.y + 1 * y_component;
+		new_player_x = game->player.x - 1 * x_component;
+	}
+	if (keycode == A_KEY)
+	{
+		double rad = game->direction_in_radian + (M_PI / 2);
+		x_component = cos(rad) * (MOVING_SPEED / 2);
+		y_component = sin(rad) * (MOVING_SPEED / 2);
+		new_player_y = game->player.y - 1 * y_component;
+		new_player_x = game->player.x + 1 * x_component;
+	}
+	if (keycode == D_KEY)
+	{
+		double rad = game->direction_in_radian - (M_PI / 2);
+		x_component = cos(rad) * (MOVING_SPEED / 2);
+		y_component = sin(rad) * (MOVING_SPEED / 2);
+		new_player_y = game->player.y - 1 * y_component;
+		new_player_x = game->player.x + 1 * x_component;
+	}
+
+	if (game->map[new_player_y/10][new_player_x/10] != '1')
+	{
+		game->player.y = new_player_y;
+		game->player.x = new_player_x;
+	}
+}
+

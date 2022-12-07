@@ -31,11 +31,13 @@ int	close_game(t_game *game)
 	return (0);
 }
 
+int is_movement(int keycode)
+{
+	return (keycode == W_KEY || keycode == S_KEY || keycode == A_KEY || keycode == D_KEY);
+}
+
 int key_hook(int keycode, t_game *game)
 {	
-	double x_component = cos(game->direction_in_radian) * MOVING_SPEED;
-	double y_component = sin(game->direction_in_radian) * MOVING_SPEED;
-
 	if (keycode == KEY_ESC)
 		close_game(game);
 	if (keycode == LEFT_ARROW)
@@ -52,32 +54,11 @@ int key_hook(int keycode, t_game *game)
 			game->player_direction = 360;
 		game->direction_in_radian = DEG_TO_RAD(game->player_direction);
 	}
-	if (keycode == W_KEY)
-	{
-		game->player.y -= 1 * y_component;
-		game->player.x += 1 * x_component;
-	}
-	if (keycode == S_KEY)
-	{
-		game->player.y += 1 * y_component;
-		game->player.x -= 1 * x_component;
-	}
-	if (keycode == A_KEY)
-	{
-		double rad = game->direction_in_radian + (M_PI / 2);
-		x_component = cos(rad) * (MOVING_SPEED / 2);
-		y_component = sin(rad) * (MOVING_SPEED / 2);
-		game->player.y -= 1 * y_component;
-		game->player.x += 1 * x_component;
-	}
-	if (keycode == D_KEY)
-	{
-		double rad = game->direction_in_radian - (M_PI / 2);
-		x_component = cos(rad) * (MOVING_SPEED / 2);
-		y_component = sin(rad) * (MOVING_SPEED / 2);
-		game->player.y -= 1 * y_component;
-		game->player.x += 1 * x_component;
-	}
+	if (is_movement(keycode))
+		move_player(keycode, game);
+	mlx_put_image_to_window(game->mlx, game->win, game->ceiling.ptr, 0, 0);
+	mlx_put_image_to_window(game->mlx, game->win, game->ground.ptr, 0, HEIGHT/2);
+	draw_3d_view(game);
 	draw_minimap(game);
 	return (0);
 }
@@ -432,6 +413,7 @@ int run_game(t_game game)
 	game.ceiling = new_image(&game, "./images/ceiling.xpm");
 	mlx_put_image_to_window(game.mlx, game.win, game.ceiling.ptr, 0, 0);
 	mlx_put_image_to_window(game.mlx, game.win, game.ground.ptr, 0, HEIGHT/2);
+	draw_3d_view(&game);
 	draw_minimap(&game);
 	mlx_loop(game.mlx);
 	return (0);
