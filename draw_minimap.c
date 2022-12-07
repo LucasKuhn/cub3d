@@ -57,23 +57,27 @@ void draw_direction(t_game *game)
 	}
 }
 
-void draw_3d(double rays[60], t_game *game)
+NUM_RAYS = 90;
+
+void draw_3d(double rays[NUM_RAYS], t_game *game)
 {
 	int n_rays = 0;
 	mlx_put_image_to_window(game->mlx, game->win, game->ground.ptr, 0, HEIGHT/2);
 
-	while (n_rays < 60)
+	while (n_rays < NUM_RAYS)
 	{
-		int vertical_offset   = n_rays * WIDTH / 60;
+		int vertical_offset   = n_rays * WIDTH / NUM_RAYS;
 		int horizontal_offset = (HEIGHT / 2) - (3000 / rays[n_rays] / 2);
 		
 		int column_width = 0;
-		while (column_width < WIDTH / 60)
+		while (column_width < WIDTH / NUM_RAYS)
 		{
 			int column_height = 0;
-			while (column_height <  (3000 / rays[n_rays]))
+			int column_projected_height = 3000 / rays[n_rays];
+			int column_color = 0x00FFFF00;
+			while (column_height < column_projected_height)
 			{
-				mlx_pixel_put(game->mlx, game->win, column_width + vertical_offset, column_height + horizontal_offset, 0x00000000);
+				mlx_pixel_put(game->mlx, game->win, column_width + vertical_offset, column_height + horizontal_offset, column_color);
 				column_height++;
 			}
 			column_width++;
@@ -90,11 +94,11 @@ void draw_fov(t_game *game)
 	double y_component;
 	double x;
 	double y;
-	double direction = game->direction_in_radian + (30 * ONE_RAD);
+	double direction = game->direction_in_radian + (NUM_RAYS / 2 * ONE_RAD);
 	
-	double rays[60] = {0};
+	double rays[90] = {0};
 
-	while (n_rays < 60)
+	while (n_rays < NUM_RAYS)
 	{
 		x_component = cos(direction);
 		y_component = sin(direction) * -1;
@@ -109,19 +113,21 @@ void draw_fov(t_game *game)
 			mlx_pixel_put(game->mlx, game->win, x, y, 0x00FFBD2D);
 			if (game->map[(int)(y/10)][(int)(x/10)] == '1')
 				hit = 1;
+			// int wall_type = get_wall_type(x, y, game->direction_in_radian);
+			// Save what kind of wall was hit
 		}
 		n_rays++;
 		direction -= ONE_RAD;
 	}
 
 	// print rays to console for debugging
-	int i = 0;
-	printf("---Rays---\n");
-	while (i < 60)
-	{
-		printf("Ray[%d]=%f\n", i, rays[i]);
-		i++;
-	}
+	// int i = 0;
+	// printf("---Rays---\n");
+	// while (i < NUM_RAYS)
+	// {
+	// 	printf("Ray[%d]=%f\n", i, rays[i]);
+	// 	i++;
+	// }
 	draw_3d(rays, game);
 }
 
