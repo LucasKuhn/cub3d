@@ -57,33 +57,53 @@ void draw_direction(t_game *game)
 	}
 }
 
-NUM_RAYS = 90;
+typedef struct s_ray {
+	double	size;
+	int		color; // Change this to reference a texture
+}				t_ray;
 
-void draw_3d(double rays[NUM_RAYS], t_game *game)
+void draw_3d(t_ray rays[WIDTH], t_game *game)
 {
 	int n_rays = 0;
 	mlx_put_image_to_window(game->mlx, game->win, game->ground.ptr, 0, HEIGHT/2);
 
-	while (n_rays < NUM_RAYS)
+	int column_width = 0;
+	while (n_rays < WIDTH)
 	{
-		int vertical_offset   = n_rays * WIDTH / NUM_RAYS;
-		int horizontal_offset = (HEIGHT / 2) - (3000 / rays[n_rays] / 2);
+		int horizontal_offset = (HEIGHT / 2) - (3000 / rays[n_rays].size / 2);
 		
-		int column_width = 0;
-		while (column_width < WIDTH / NUM_RAYS)
+		int column_height = 0;
+		int column_projected_height = 3000 / rays[n_rays].size;
+		int column_color = rays[n_rays].color;
+		while (column_height < column_projected_height)
 		{
-			int column_height = 0;
-			int column_projected_height = 3000 / rays[n_rays];
-			int column_color = 0x00FFFF00;
-			while (column_height < column_projected_height)
-			{
-				mlx_pixel_put(game->mlx, game->win, column_width + vertical_offset, column_height + horizontal_offset, column_color);
-				column_height++;
-			}
-			column_width++;
+			mlx_pixel_put(game->mlx, game->win, column_width, column_height + horizontal_offset, column_color);
+			column_height++;
 		}
+		column_width++;
 		n_rays++;
 	}
+}
+
+
+int get_wall_color(double direction, int vertical_hit)
+{
+	if (direction > 0 && direction < M_PI_2 && vertical_hit) // first quadrant
+		return(WHITE);
+	if (direction > 0 && direction < M_PI_2 || (direction > 2*M_PI && !vertical_hit)) // first quadrant
+		return(BLUE);
+	if (direction > M_PI_2 && direction < M_PI && vertical_hit) // second quadrant
+		return(YELLOW);
+	if (direction > M_PI_2 && direction < M_PI) // second quadrant
+		return(BLUE);
+	if (direction > M_PI && direction < 3*M_PI/2 && vertical_hit) // third quadrant
+		return(YELLOW);
+	if (direction > M_PI && direction < 3*M_PI/2) // third quadrant
+		return(GREEN);
+	if (vertical_hit) // fourth quadrant
+		return(WHITE);
+	else // fourth quadrant
+		return(GREEN);
 }
 
 void draw_fov(t_game *game)
@@ -94,32 +114,36 @@ void draw_fov(t_game *game)
 	double y_component;
 	double x;
 	double y;
-	double direction = game->direction_in_radian + (NUM_RAYS / 2 * ONE_RAD);
-	
-	double rays[90] = {0};
-
-	while (n_rays < NUM_RAYS)
+	double fov = ( M_PI / 2 );
+	double direction = game->direction_in_radian + (fov / 2);
+	double step_size = fov / WIDTH;	
+	int	   vertical_hit;
+	t_ray rays[WIDTH] = {0};
+	while (n_rays < WIDTH)
 	{
-		x_component = cos(direction);
-		y_component = sin(direction) * -1;
-		x = game->player.x + 1.5;
-		y = game->player.y + 1.5;
+		x_component =  cos(direction) / 2; // Increasing this value will make the ray step smaller
+		y_component = -sin(direction) / 2; // Increasing this value will make the ray step smaller
+		x = game->player.x;
+		y = game->player.y;
 		hit = 0;
+		vertical_hit = FALSE;
 		while (!hit && x > 0 && x < WIDTH && y > 0 && y < HEIGHT)
 		{
 			x += x_component;
+			if (game->map[(int)(y/10)][(int)(x/10)] == '1')
+				vertical_hit = TRUE;
 			y += y_component;
-			rays[n_rays] += sqrt(pow(x_component, 2) + pow(y_component, 2));
 			mlx_pixel_put(game->mlx, game->win, x, y, 0x00FFBD2D);
 			if (game->map[(int)(y/10)][(int)(x/10)] == '1')
+			{
 				hit = 1;
-			// int wall_type = get_wall_type(x, y, game->direction_in_radian);
-			// Save what kind of wall was hit
+				rays[n_rays].size = sqrt(pow(x - game->player.x, 2) + pow(y - game->player.y, 2));
+				rays[n_rays].color = get_wall_color(direction, vertical_hit);
+			}
 		}
 		n_rays++;
-		direction -= ONE_RAD;
+		direction -= step_size;
 	}
-
 	// print rays to console for debugging
 	// int i = 0;
 	// printf("---Rays---\n");
