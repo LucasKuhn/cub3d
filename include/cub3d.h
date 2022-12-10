@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2022/12/07 14:34:15 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2022/12/09 16:25:23 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 
 # define RED 0xFF0000
 # define GREEN 0x00FF00
+# define YELLOW 0xFFFF00
+# define BLUE 0x0000FF
+# define WHITE 0xFFFFFF
+
 # define LEFT_ARROW 65361
 # define RIGHT_ARROW 65363
 # define W_KEY 119
