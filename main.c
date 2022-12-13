@@ -37,7 +37,7 @@ int is_movement(int keycode)
 }
 
 int key_hook(int keycode, t_game *game)
-{	
+{
 	if (keycode == KEY_ESC)
 		close_game(game);
 	if (keycode == LEFT_ARROW)
@@ -393,11 +393,21 @@ int exit_error(char *str)
 	exit(1);
 }
 
-t_image	new_image(t_game *game, char *path)
+t_image	new_xpm(t_game *game, char *path)
 {
 	t_image	img;
 
 	img.ptr = mlx_xpm_file_to_image(game->mlx, path, &img.size.x, &img.size.y);
+	img.pixels = mlx_get_data_addr(img.ptr, &img.bits, &img.line_size,
+			&img.endian);
+	return (img);
+}
+
+t_image	new_image(t_game *game, int width, int height)
+{
+	t_image	img;
+
+	img.ptr = mlx_new_image(game->mlx, width, height);
 	img.pixels = mlx_get_data_addr(img.ptr, &img.bits, &img.line_size,
 			&img.endian);
 	return (img);
@@ -409,12 +419,13 @@ int run_game(t_game game)
 	game.win = mlx_new_window(game.mlx, WIDTH, HEIGHT, "cub3D");
 	mlx_hook(game.win, BTN_X, NO_EVENT, close_game, &game);
 	mlx_hook(game.win, 02, 1L<<0, key_hook, &game);
-	game.ground = new_image(&game, "./images/ground.xpm");
-	game.ceiling = new_image(&game, "./images/ceiling.xpm");
+	game.ground = new_xpm(&game, "./images/ground.xpm");
+	game.ceiling = new_xpm(&game, "./images/ceiling.xpm");
+	game.columns = new_image(&game, 1080, 560);
 	mlx_put_image_to_window(game.mlx, game.win, game.ceiling.ptr, 0, 0);
 	mlx_put_image_to_window(game.mlx, game.win, game.ground.ptr, 0, HEIGHT/2);
 	draw_3d_view(&game);
-	draw_minimap(&game);
+/* 	draw_minimap(&game); */
 	mlx_loop(game.mlx);
 	return (0);
 }
