@@ -424,8 +424,22 @@ int run_game(t_game game)
 	game.columns = new_image(&game, 1080, 560);
 	mlx_put_image_to_window(game.mlx, game.win, game.ceiling.ptr, 0, 0);
 	mlx_put_image_to_window(game.mlx, game.win, game.ground.ptr, 0, HEIGHT/2);
-	draw_3d_view(&game);
+/* 	draw_3d_view(&game); */
 /* 	draw_minimap(&game); */
+	int	teste = HEIGHT;
+	int	n_rays = 0;
+	while (n_rays < 70)
+	{
+		draw_3d_real(&game, teste, n_rays);
+		n_rays++;
+		teste -= 5;
+	}
+	while (n_rays < 230)
+	{
+		draw_3d_real(&game, teste, n_rays);
+		n_rays++;
+	}
+	mlx_put_image_to_window(game.mlx, game.win, game.columns.ptr, 0, 0);
 	mlx_loop(game.mlx);
 	return (0);
 }
