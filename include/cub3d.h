@@ -3,52 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2022/12/14 19:50:02 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/12/14 16:59:59 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
-# define CUB3D_H
+#define CUB3D_H
 
-# include <mlx.h> // MiniLibX
-# include <stdlib.h>
-# include <stdio.h> // printf
-# include "libft/libft.h" // libft
-# include <fcntl.h> // open
-# include <math.h> // math
+#include <mlx.h> // MiniLibX
+#include <stdlib.h>
+#include <stdio.h>		 // printf
+#include "libft/libft.h" // libft
+#include <fcntl.h>		 // open
+#include <math.h>		 // math
 
-# define RED 0xFF0000
-# define GREEN 0x00FF00
-# define YELLOW 0xFFFF00
-# define BLUE 0x0000FF
-# define WHITE 0xFFFFFF
+#define RED 0xFF0000
+#define GREEN 0x00FF00
+#define YELLOW 0xFFFF00
+#define BLUE 0x0000FF
+#define WHITE 0xFFFFFF
 
-# define LEFT_ARROW 65361
-# define RIGHT_ARROW 65363
-# define W_KEY 119
-# define A_KEY 97
-# define S_KEY 115
-# define D_KEY 100
-# define KEY_ESC 65307
+#define LEFT_ARROW 65361
+#define RIGHT_ARROW 65363
+#define W_KEY 119
+#define A_KEY 97
+#define S_KEY 115
+#define D_KEY 100
+#define KEY_ESC 65307
 
-# define BTN_X 17
-# define NO_EVENT 0L
+#define BTN_X 17
+#define NO_EVENT 0L
 
-# define TRUE 1
-# define FALSE 0
+#define TRUE 1
+#define FALSE 0
 
-# define WIDTH 1080
-# define HEIGHT 560
+#define WIDTH 1080
+#define HEIGHT 560
 
-# define TURNING_SPEED 10
-# define MOVING_SPEED 5
+#define TURNING_SPEED 10
+#define MOVING_SPEED 5
 
-# define ONE_RAD 0.0174533
+#define ONE_RAD 0.0174533
 
-#define DEG_TO_RAD( n ) ( n * (M_PI/180.0) )
+#define DEG_TO_RAD(n) (n * (M_PI / 180.0))
 
 typedef enum e_identifiers
 {
@@ -58,39 +58,50 @@ typedef enum e_identifiers
 	EA,
 	C,
 	F
-}			t_identifiers;
+} t_identifiers;
 
-typedef struct s_vector {
-	int	x;
-	int	y;
-}				t_vector;
+typedef struct s_vector
+{
+	int x;
+	int y;
+} t_vector;
 
-typedef struct s_image {
-	void		*ptr;
-	char		*pixels;
-	t_vector	size;
-	int			bits;
-	int			line_size;
-	int			endian;
-}				t_image;
+typedef struct s_image
+{
+	void *ptr;
+	char *pixels;
+	t_vector size;
+	int bits;
+	int line_size;
+	int endian;
+} t_image;
 
 typedef struct s_game
 {
-	void			*mlx;
-	void			*win;
-	char			*map_name;
-	char			**map;
-	t_vector		player;
-	int				player_direction;
-	double			direction_in_radian;
-	t_image			ground;
-	t_image			ceiling;
-	t_image			columns;
-}				t_game;
+	void *mlx;
+	void *win;
+	char *map_name;
+	char **map;
+	t_vector player;
+	int player_direction;
+	double direction_in_radian;
+	t_image ground;
+	t_image ceiling;
+	t_image columns;
+} t_game;
 
-void	draw_minimap(t_game *game);
-void	move_player(int keycode, t_game *game);
-void	draw_3d_view(t_game *game);
-void	draw_image_column(t_game *game, double dist, int column, int color); //will be the normal 3d_view
+void draw_minimap(t_game *game);
+void move_player(int keycode, t_game *game);
+void draw_3d_view(t_game *game);
+void draw_image_column(t_game *game, double dist, int column, int color); // will be the normal 3d_view
+char *get_map_error(char **map);
+t_vector find_player(t_game *game);
+char **load_map(char *map_name);
+int valid_extension(char *map_name);
+
+// Utils
+char *ft_strndup(char *str, int n);
+void free_matrix(char **ptr);
+size_t ft_arrlen(char **arr);
 
 #endif

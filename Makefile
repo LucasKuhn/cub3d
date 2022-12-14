@@ -1,6 +1,7 @@
 NAME		=	cub3D
 MLXFLAGS	=	-lmlx -Ilmlx -lXext -lX11
-SRCS		=	main.c draw_minimap.c draw_3d_view.c move_player.c
+SRCS		=	draw_3d_view.c    find_player.c     load_map.c        move_player.c \
+draw_minimap.c    get_map_error.c   main.c            valid_extension.c utils.c
 OBJ_DIR		=	obj
 OBJS		=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 LIBFT		=	libft/libft.a
