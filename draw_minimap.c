@@ -71,7 +71,7 @@ void draw_3d(t_ray rays[WIDTH], t_game *game)
 	while (n_rays < WIDTH)
 	{
 		int horizontal_offset = (HEIGHT / 2) - (3000 / rays[n_rays].size / 2);
-		
+
 		int column_height = 0;
 		int column_projected_height = 3000 / rays[n_rays].size;
 		int column_color = rays[n_rays].color;
@@ -116,7 +116,7 @@ void draw_fov(t_game *game)
 	double y;
 	double fov = ( M_PI / 2 );
 	double direction = game->direction_in_radian + (fov / 2);
-	double step_size = fov / WIDTH;	
+	double step_size = fov / WIDTH;
 	int	   vertical_hit;
 	t_ray rays[WIDTH] = {0};
 	while (n_rays < WIDTH)

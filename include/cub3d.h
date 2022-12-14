@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2022/12/09 16:25:23 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2022/12/13 21:37:26 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,12 @@ typedef struct s_game
 	double			direction_in_radian;
 	t_image			ground;
 	t_image			ceiling;
+	t_image			columns;
 }				t_game;
 
 void	draw_minimap(t_game *game);
 void	move_player(int keycode, t_game *game);
 void	draw_3d_view(t_game *game);
+void draw_3d_real(t_game *game, int height, int ray); //will be the normal 3d_view
 
 #endif
