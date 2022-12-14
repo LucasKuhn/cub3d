@@ -65,6 +65,7 @@ typedef struct s_ray {
 void draw_3d(t_ray rays[WIDTH], t_game *game)
 {
 	int n_rays = 0;
+
 	mlx_put_image_to_window(game->mlx, game->win, game->ground.ptr, 0, HEIGHT/2);
 
 	int column_width = 0;
@@ -121,8 +122,8 @@ void draw_fov(t_game *game)
 	t_ray rays[WIDTH] = {0};
 	while (n_rays < WIDTH)
 	{
-		x_component =  cos(direction) / 2; // Increasing this value will make the ray step smaller
-		y_component = -sin(direction) / 2; // Increasing this value will make the ray step smaller
+		x_component =  cos(direction) / 20; // Increasing this value will make the ray step smaller
+		y_component = -sin(direction) / 20; // Increasing this value will make the ray step smaller
 		x = game->player.x;
 		y = game->player.y;
 		hit = 0;
@@ -133,7 +134,7 @@ void draw_fov(t_game *game)
 			if (game->map[(int)(y/10)][(int)(x/10)] == '1')
 				vertical_hit = TRUE;
 			y += y_component;
-			mlx_pixel_put(game->mlx, game->win, x, y, 0x00FFBD2D);
+		/* 	mlx_pixel_put(game->mlx, game->win, x, y, 0x00FFBD2D); */
 			if (game->map[(int)(y/10)][(int)(x/10)] == '1')
 			{
 				hit = 1;
@@ -144,15 +145,13 @@ void draw_fov(t_game *game)
 		n_rays++;
 		direction -= step_size;
 	}
-	// print rays to console for debugging
-	// int i = 0;
-	// printf("---Rays---\n");
-	// while (i < NUM_RAYS)
-	// {
-	// 	printf("Ray[%d]=%f\n", i, rays[i]);
-	// 	i++;
-	// }
-	draw_3d(rays, game);
+	int i = 0;
+	while (i < WIDTH)
+	{
+		draw_image_column(game, rays[i].size, i, rays[i].color);
+		i++;
+	}
+/* 	draw_3d(rays, game); */
 }
 
 void draw_minimap(t_game *game)
@@ -164,6 +163,10 @@ void draw_minimap(t_game *game)
 	while (*(game->map)[0] != ' ' && *(game->map)[0] != '1')
 		game->map++;
 	y = 0;
+	draw_fov(game);
+	mlx_put_image_to_window(game->mlx, game->win, game->columns.ptr, 0, 0);
+	draw_player(game);
+	draw_direction(game);
 	while (game->map[y])
 	{
 		x = 0;
@@ -177,8 +180,4 @@ void draw_minimap(t_game *game)
 		}
 		y++;
 	}
-
-	draw_player(game);
-	draw_fov(game);
-	draw_direction(game);
 }

@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2022/12/13 21:37:26 by lucferna         ###   ########.fr       */
+/*   Updated: 2022/12/14 19:50:02 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,6 @@ typedef struct s_game
 void	draw_minimap(t_game *game);
 void	move_player(int keycode, t_game *game);
 void	draw_3d_view(t_game *game);
-void draw_3d_real(t_game *game, int height, int ray); //will be the normal 3d_view
+void	draw_image_column(t_game *game, double dist, int column, int color); //will be the normal 3d_view
 
 #endif
