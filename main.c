@@ -9,32 +9,15 @@ int close_game(t_game *game)
 	return (0);
 }
 
-int is_movement(int keycode)
-{
-	return (keycode == W_KEY || keycode == S_KEY || keycode == A_KEY || keycode == D_KEY);
-}
-
 int key_hook(int keycode, t_game *game)
 {
 	if (keycode == KEY_ESC)
 		close_game(game);
-	if (keycode == LEFT_ARROW)
-	{
-		game->player_direction += TURNING_SPEED;
-		if (game->player_direction > 360)
-			game->player_direction = 0;
-		game->direction_in_radian = DEG_TO_RAD(game->player_direction);
-	}
-	if (keycode == RIGHT_ARROW)
-	{
-		game->player_direction -= TURNING_SPEED;
-		if (game->player_direction < 0)
-			game->player_direction = 360;
-		game->direction_in_radian = DEG_TO_RAD(game->player_direction);
-	}
+	if (is_direction(keycode))
+		change_direction(keycode, game);
 	if (is_movement(keycode))
 		move_player(keycode, game);
-	draw_minimap(game);
+	render_screen(game);
 	return (0);
 }
 
@@ -71,11 +54,7 @@ int run_game(t_game game)
 	game.win = mlx_new_window(game.mlx, WIDTH, HEIGHT, "cub3D");
 	mlx_hook(game.win, BTN_X, NO_EVENT, close_game, &game);
 	mlx_hook(game.win, 02, 1L << 0, key_hook, &game);
-	game.ground = new_xpm(&game, "./images/ground.xpm");
-	game.ceiling = new_xpm(&game, "./images/ceiling.xpm");
 	game.columns = new_image(&game, 1080, 560);
-	/* 	draw_3d_view(&game); */
-	/* 	draw_minimap(&game); */
 	mlx_loop(game.mlx);
 	return (0);
 }

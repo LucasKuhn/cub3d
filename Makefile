@@ -1,7 +1,9 @@
 NAME		=	cub3D
 MLXFLAGS	=	-lmlx -Ilmlx -lXext -lX11
-SRCS		=	draw_3d_view.c    find_player.c     load_map.c        move_player.c \
-draw_minimap.c    get_map_error.c   main.c            valid_extension.c utils.c
+# CFLAGS		=	-fsanitize=address 
+SRCS		=	draw_3d_view.c    get_map_error.c   main.c            valid_extension.c \
+draw_minimap.c    keycode_helpers.c movement_utils.c \
+find_player.c     load_map.c        utils.c render_screen.c cast_rays.c draw_utils.c
 OBJ_DIR		=	obj
 OBJS		=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 LIBFT		=	libft/libft.a

@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2022/12/14 16:59:59 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2022/12/15 14:14:45 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,12 @@ typedef struct s_game
 	t_image columns;
 } t_game;
 
+typedef struct s_ray
+{
+	double size;
+	int color; // Change this to reference a texture
+} t_ray;
+
 void draw_minimap(t_game *game);
 void move_player(int keycode, t_game *game);
 void draw_3d_view(t_game *game);
@@ -103,5 +109,23 @@ int valid_extension(char *map_name);
 char *ft_strndup(char *str, int n);
 void free_matrix(char **ptr);
 size_t ft_arrlen(char **arr);
+
+// Keycode helpers
+int is_movement(int keycode);
+int is_direction(int keycode);
+
+// Movement utils
+void change_direction(int keycode, t_game *game);
+void move_player(int keycode, t_game *game);
+
+// Main render screen function
+void render_screen(t_game *game);
+
+// Raycasting
+void cast_rays(t_game *game, t_ray rays[]);
+
+// Draw utils
+void draw_player(t_game *game);
+void draw_direction(t_game *game);
 
 #endif
