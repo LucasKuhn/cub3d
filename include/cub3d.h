@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2022/12/15 14:14:45 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2022/12/16 15:30:54 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,21 +85,22 @@ typedef struct s_game
 	t_vector player;
 	int player_direction;
 	double direction_in_radian;
-	t_image ground;
-	t_image ceiling;
+	t_image north;
+	t_image south;
+	t_image west;
+	t_image east;
 	t_image columns;
 } t_game;
 
 typedef struct s_ray
 {
 	double size;
-	int color; // Change this to reference a texture
+	t_image texture;
 } t_ray;
 
 void draw_minimap(t_game *game);
 void move_player(int keycode, t_game *game);
 void draw_3d_view(t_game *game);
-void draw_image_column(t_game *game, double dist, int column, int color); // will be the normal 3d_view
 char *get_map_error(char **map);
 t_vector find_player(t_game *game);
 char **load_map(char *map_name);
