@@ -81,6 +81,8 @@ int main(int argc, char **argv)
 		free_matrix(game.map);
 		exit_error(map_error);
 	}
+	while (*game.map[0] != ' ' && *game.map[0] != '1')
+		game.map++;
 	run_game(game);
 	return (0);
 }

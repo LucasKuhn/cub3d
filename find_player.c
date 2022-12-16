@@ -9,10 +9,7 @@ t_vector find_player(t_game *game)
 	char **map = game->map;
 	// skip texture lines
 	while (*map[0] != ' ' && *map[0] != '1')
-	{
 		map++;
-		i++;
-	}
 	i = 0;
 	while (map[i])
 	{
