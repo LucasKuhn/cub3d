@@ -2,10 +2,9 @@
 
 void draw_player(t_game *game)
 {
-	int x;
-	int y;
-
-	static void *texture;
+	int			x;
+	int			y;
+	static void	*texture;
 
 	if (!texture)
 		texture = mlx_xpm_file_to_image(game->mlx, "./images/yellow3x3.xpm", &x, &y);

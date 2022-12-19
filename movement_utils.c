@@ -52,7 +52,6 @@ void move_player(int keycode, t_game *game)
 		new_player_y = game->player.y - 1 * y_component;
 		new_player_x = game->player.x + 1 * x_component;
 	}
-
 	if (game->map[new_player_y / 10][new_player_x / 10] != '1')
 	{
 		game->player.y = new_player_y;

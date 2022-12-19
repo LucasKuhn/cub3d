@@ -55,6 +55,10 @@ int run_game(t_game game)
 	mlx_hook(game.win, BTN_X, NO_EVENT, close_game, &game);
 	mlx_hook(game.win, 02, 1L << 0, key_hook, &game);
 	game.columns = new_image(&game, 1080, 560);
+	game.north = new_xpm(&game, "./images/north.xpm");
+	game.south = new_xpm(&game, "./images/south.xpm");
+	game.east = new_xpm(&game, "./images/east.xpm");
+	game.west = new_xpm(&game, "./images/west.xpm");
 	mlx_loop(game.mlx);
 	return (0);
 }
@@ -77,6 +81,8 @@ int main(int argc, char **argv)
 		free_matrix(game.map);
 		exit_error(map_error);
 	}
+	while (*game.map[0] != ' ' && *game.map[0] != '1')
+		game.map++;
 	run_game(game);
 	return (0);
 }
