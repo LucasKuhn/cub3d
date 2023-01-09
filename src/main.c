@@ -12,6 +12,7 @@ int close_game(t_game *game)
 	mlx_destroy_window(game->mlx, game->win);
 	mlx_destroy_display(game->mlx);
 	free(game->mlx);
+	free_matrix(game->map_original);
 	exit(0);
 	return (0);
 }
@@ -84,6 +85,7 @@ int main(int argc, char **argv)
 	if (!valid_extension(game.map_name))
 		exit_error("Invalid map extension");
 	game.map = load_map(game.map_name);
+	game.map_original = game.map;
 	game.player = find_player(&game);
 	map_error = get_map_error(game.map);
 	if (map_error)

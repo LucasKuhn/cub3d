@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/09 20:45:44 by lucferna         ###   ########.fr       */
+/*   Updated: 2023/01/09 20:57:04 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_game
 	void		*win;
 	char		*map_name;
 	char		**map;
+	char		**map_original;
 	int			floor[3];
 	int			ceiling[3];
 	t_vector	player;
