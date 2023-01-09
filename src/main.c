@@ -2,6 +2,13 @@
 
 int close_game(t_game *game)
 {
+	mlx_destroy_image(game->mlx, game->textures.north.ptr);
+	mlx_destroy_image(game->mlx, game->textures.south.ptr);
+	mlx_destroy_image(game->mlx, game->textures.west.ptr);
+	mlx_destroy_image(game->mlx, game->textures.east.ptr);
+	mlx_destroy_image(game->mlx, game->textures.frame.ptr);
+	mlx_destroy_image(game->mlx, game->textures.player.ptr);
+	mlx_destroy_image(game->mlx, game->textures.cube.ptr);
 	mlx_destroy_window(game->mlx, game->win);
 	mlx_destroy_display(game->mlx);
 	free(game->mlx);
@@ -54,11 +61,14 @@ int run_game(t_game game)
 	game.win = mlx_new_window(game.mlx, WIDTH, HEIGHT, "cub3D");
 	mlx_hook(game.win, BTN_X, NO_EVENT, close_game, &game);
 	mlx_hook(game.win, 02, 1L << 0, key_hook, &game);
-	game.columns = new_image(&game, 1080, 560);
-	game.north = new_xpm(&game, "./images/north.xpm");
-	game.south = new_xpm(&game, "./images/south.xpm");
-	game.east = new_xpm(&game, "./images/east.xpm");
-	game.west = new_xpm(&game, "./images/west.xpm");
+	game.textures.frame = new_image(&game, 1080, 560);
+	game.textures.cube = new_xpm(&game, "./images/gray10.xpm");
+	game.textures.player = new_xpm(&game, "./images/yellow3x3.xpm");
+	game.textures.north = new_xpm(&game, "./images/north.xpm");
+	game.textures.south = new_xpm(&game, "./images/south.xpm");
+	game.textures.east = new_xpm(&game, "./images/east.xpm");
+	game.textures.west = new_xpm(&game, "./images/west.xpm");
+	render_screen(&game);
 	mlx_loop(game.mlx);
 	return (0);
 }

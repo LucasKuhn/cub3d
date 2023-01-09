@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/06 20:23:28 by lucferna         ###   ########.fr       */
+/*   Updated: 2023/01/09 20:45:44 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,20 +76,29 @@ typedef struct s_image
 	int endian;
 } t_image;
 
+typedef struct s_textures
+{
+	t_image	north;
+	t_image	south;
+	t_image	west;
+	t_image	east;
+	t_image	frame;
+	t_image	player;
+	t_image	cube;
+} t_textures;
+
 typedef struct s_game
 {
-	void *mlx;
-	void *win;
-	char *map_name;
-	char **map;
-	t_vector player;
-	int player_direction;
-	double direction_in_radian;
-	t_image north;
-	t_image south;
-	t_image west;
-	t_image east;
-	t_image columns;
+	void		*mlx;
+	void		*win;
+	char		*map_name;
+	char		**map;
+	int			floor[3];
+	int			ceiling[3];
+	t_vector	player;
+	int			player_direction;
+	double		direction_in_radian;
+	t_textures	textures;
 } t_game;
 
 typedef struct s_ray
