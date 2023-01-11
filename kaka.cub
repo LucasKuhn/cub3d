@@ -1,7 +1,7 @@
-NO ./texture
-SO ./texture
-WE ./texture
-EA ./texture
+NO ./images/north.xpm
+SO ./images/north.xpm
+WE ./images/north.xpm
+EA ./images/north.xpm
 
 F 0,222,174
 C 232,200,93
