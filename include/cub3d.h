@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/09 20:57:04 by lucferna         ###   ########.fr       */
+/*   Updated: 2023/01/09 21:30:54 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int valid_extension(char *map_name);
 char *ft_strndup(char *str, int n);
 void free_matrix(char **ptr);
 size_t ft_arrlen(char **arr);
+void load_map_textures(t_game *game);
 
 // Keycode helpers
 int is_movement(int keycode);
