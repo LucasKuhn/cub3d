@@ -3,21 +3,21 @@
 t_image get_wall_texture(t_game *game, double direction, int vertical_hit)
 {
 	if (direction > 0 && direction < M_PI_2 && vertical_hit) // first quadrant
-		return (game->south); // south
+		return (game->textures.south); // south
 	if (direction > 0 && direction < M_PI_2 || (direction > 2 * M_PI && !vertical_hit)) // first quadrant
-		return (game->west); // west
+		return (game->textures.west); // west
 	if (direction > M_PI_2 && direction < M_PI && vertical_hit) // second quadrant
-		return (game->north); // north
+		return (game->textures.north); // north
 	if (direction > M_PI_2 && direction < M_PI) // second quadrant
-		return (game->west); // west
+		return (game->textures.west); // west
 	if (direction > M_PI && direction < 3 * M_PI / 2 && vertical_hit) // third quadrant
-		return (game->north); // north
+		return (game->textures.north); // north
 	if (direction > M_PI && direction < 3 * M_PI / 2) // third quadrant
-		return (game->east); // east
+		return (game->textures.east); // east
 	if (vertical_hit) // fourth quadrant
-		return (game->south); // south
+		return (game->textures.south); // south
 	else // fourth quadrant
-		return (game->east); // east
+		return (game->textures.east); // east
 }
 
 void cast_rays(t_game *game, t_ray rays[])
@@ -52,7 +52,7 @@ void cast_rays(t_game *game, t_ray rays[])
 				hit = 1;
 				long double player_ray_difference = game->direction_in_radian - direction;
 				long double fisheye_fix = cos(player_ray_difference * 0.8); // 0.8 keeps a small amount of fisheye, avoiding distortion on the sides
-				long double size = sqrt(pow(x - game->player.x, 2) + pow(y - game->player.y, 2)) * fisheye_fix; 
+				long double size = sqrt(pow(x - game->player.x, 2) + pow(y - game->player.y, 2)) * fisheye_fix;
 				rays[n_rays].size = size;
 				rays[n_rays].texture = get_wall_texture(game, direction, vertical_hit);
 			}

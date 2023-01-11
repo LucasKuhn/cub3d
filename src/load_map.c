@@ -2,11 +2,12 @@
 
 char **load_map(char *map_name)
 {
-	static char buffer[2];
-	char *map;
-	char *ref;
-	int n_read;
-	int fd;
+	static char	buffer[2];
+	char		**returned;
+	char		*map;
+	char		*ref;
+	int			n_read;
+	int			fd;
 
 	fd = open(map_name, O_RDONLY);
 	if (fd <= 0)
@@ -23,5 +24,7 @@ char **load_map(char *map_name)
 		free(ref);
 	}
 	close(fd);
-	return (ft_split(map, '\n'));
+	returned = ft_split(map, '\n');
+	free(map);
+	return (returned);
 }
