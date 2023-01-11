@@ -2,20 +2,18 @@
 
 void draw_image_column(t_game *game, t_ray ray, int column)
 {
-	int ground_color = 0x5e3306;
-	int sky_color = 0x06c5cf;
 	double column_height;
 	double offset; // difference between the column height and the screen height
 
 	column_height = (HEIGHT / ray.size) * 5;
 	offset = ceil((HEIGHT - column_height) / 2);
 	int y = 1;
-	while (y < offset) // THIS DRAWS THE GROUND
+	while (y < offset) // THIS DRAWS THE CEILING
 	{
 		int pixel = (y * game->textures.frame.line_size) + (column * 4);	// change the 'offset' to top offset the dist
-		game->textures.frame.pixels[pixel + 0] = (ground_color);			// blue
-		game->textures.frame.pixels[pixel + 1] = (ground_color >> 8);		// green
-		game->textures.frame.pixels[pixel + 2] = (ground_color >> 16);		// red
+		game->textures.frame.pixels[pixel + 0] = game->ceiling[2];	// blue
+		game->textures.frame.pixels[pixel + 1] = game->ceiling[1];	// green
+		game->textures.frame.pixels[pixel + 2] = game->ceiling[0];	// red
 		game->textures.frame.pixels[pixel + 3] = 0;						// alpha
 		y++;
 	}
@@ -28,6 +26,8 @@ void draw_image_column(t_game *game, t_ray ray, int column)
 	while (y < HEIGHT - offset) // THIS DRAWS THE textures.frame
 	{
 		int pixel = (y * game->textures.frame.line_size) + (column * 4); // change the 'offset' to top offset the dist
+		if (pixel > HEIGHT * WIDTH * 4)
+			break;
 		int texture_offset_x = (column % 256) * 4;
 		int current_texture_y = (int)floor(texture_y);
 		game->textures.frame.pixels[pixel + 0] = ray.texture.pixels[(current_texture_y * ray.texture.line_size + texture_offset_x) + 0];	// blue
@@ -37,12 +37,12 @@ void draw_image_column(t_game *game, t_ray ray, int column)
 		texture_y += 1 * step_y;
 		y++;
 	}
-	while (y < HEIGHT) // THIS DRAWS THE SKY
+	while (y < HEIGHT) // THIS DRAWS THE GROUND
 	{
 		int pixel = (y * game->textures.frame.line_size) + (column * 4);	// change the 'offset' to top offset the dist
-		game->textures.frame.pixels[pixel + 0] = (sky_color);				// blue
-		game->textures.frame.pixels[pixel + 1] = (sky_color >> 8);			// green
-		game->textures.frame.pixels[pixel + 2] = (sky_color >> 16);		// red
+		game->textures.frame.pixels[pixel + 0] = game->floor[2];	// blue
+		game->textures.frame.pixels[pixel + 1] = game->floor[1];	// green
+		game->textures.frame.pixels[pixel + 2] = game->floor[0];	// red
 		game->textures.frame.pixels[pixel + 3] = 0;						// alpha
 		y++;
 	}
