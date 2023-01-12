@@ -25,7 +25,6 @@ void	move_player(int keycode, t_game *game)
 	int		new_player_x;
 	int		new_player_y;
 	double	rad;
-	double	rad;
 
 	x_component = cos(game->direction_in_radian) * MOVING_SPEED;
 	y_component = sin(game->direction_in_radian) * MOVING_SPEED;

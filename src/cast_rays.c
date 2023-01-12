@@ -79,8 +79,7 @@ void	cast_rays(t_game *game, t_ray rays[])
 				hit = 1;
 				player_ray_difference = game->direction_in_radian - direction;
 				long double fisheye_fix = cos(player_ray_difference * 0.8);
-					// 0.8 keeps a small amount of fisheye,
-					avoiding distortion on the sides
+					// 0.8 keeps a small amount of fisheye, avoiding distortion on the sides
 				size = sqrt(pow(x - game->player.x, 2) + pow(y - game->player.y,
 							2)) * fisheye_fix;
 				rays[n_rays].size = size;

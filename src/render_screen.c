@@ -70,10 +70,9 @@ void	draw_image_column(t_game *game, t_ray ray, int column)
 
 void	render_screen(t_game *game)
 {
-	t_ray	rays[WIDTH];
 	int		i;
-
-	rays[WIDTH] = {0};
+	t_ray	rays[WIDTH] = {0};
+	
 	cast_rays(game, rays);
 	i = 0;
 	while (i < WIDTH)
