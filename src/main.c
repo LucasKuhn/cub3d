@@ -1,6 +1,6 @@
 #include "./include/cub3d.h"
 
-int close_game(t_game *game)
+int	close_game(t_game *game)
 {
 	mlx_destroy_image(game->mlx, game->textures.north.ptr);
 	mlx_destroy_image(game->mlx, game->textures.south.ptr);
@@ -17,7 +17,7 @@ int close_game(t_game *game)
 	return (0);
 }
 
-int key_hook(int keycode, t_game *game)
+int	key_hook(int keycode, t_game *game)
 {
 	if (keycode == KEY_ESC)
 		close_game(game);
@@ -29,34 +29,34 @@ int key_hook(int keycode, t_game *game)
 	return (0);
 }
 
-int exit_error(char *str)
+int	exit_error(char *str)
 {
 	printf("Error\n");
 	printf("%s\n", str);
 	exit(1);
 }
 
-t_image new_xpm(t_game *game, char *path)
+t_image	new_xpm(t_game *game, char *path)
 {
-	t_image img;
+	t_image	img;
 
 	img.ptr = mlx_xpm_file_to_image(game->mlx, path, &img.size.x, &img.size.y);
 	img.pixels = mlx_get_data_addr(img.ptr, &img.bits, &img.line_size,
-								   &img.endian);
+			&img.endian);
 	return (img);
 }
 
-t_image new_image(t_game *game, int width, int height)
+t_image	new_image(t_game *game, int width, int height)
 {
-	t_image img;
+	t_image	img;
 
 	img.ptr = mlx_new_image(game->mlx, width, height);
 	img.pixels = mlx_get_data_addr(img.ptr, &img.bits, &img.line_size,
-								   &img.endian);
+			&img.endian);
 	return (img);
 }
 
-int run_game(t_game game)
+int	run_game(t_game game)
 {
 	mlx_hook(game.win, BTN_X, NO_EVENT, close_game, &game);
 	mlx_hook(game.win, 02, 1L << 0, key_hook, &game);
@@ -68,10 +68,10 @@ int run_game(t_game game)
 	return (0);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_game game;
-	char *map_error;
+	t_game	game;
+	char	*map_error;
 
 	if (argc < 2)
 		exit_error("Please provide a map");

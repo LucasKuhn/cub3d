@@ -1,6 +1,6 @@
 #include "./include/cub3d.h"
 
-char **load_map(char *map_name)
+char	**load_map(char *map_name)
 {
 	static char	buffer[2];
 	char		**returned;

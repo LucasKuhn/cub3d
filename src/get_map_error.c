@@ -1,20 +1,20 @@
 #include "./include/cub3d.h"
 
 // TODO: THIS IS TRASH! NOT OK! PLEASE FIX ME!
-int found_NO = FALSE;
-int found_SO = FALSE;
-int found_WE = FALSE;
-int found_EA = FALSE;
-int found_F = FALSE;
-int found_C = FALSE;
+int		found_NO = FALSE;
+int		found_SO = FALSE;
+int		found_WE = FALSE;
+int		found_EA = FALSE;
+int		found_F = FALSE;
+int		found_C = FALSE;
 
-int invalid_color(char *map)
+int	invalid_color(char *map)
 {
-	char **colors;
-	char *copy;
-	int info_size;
-	int i;
-	int num;
+	char	**colors;
+	char	*copy;
+	int		info_size;
+	int		i;
+	int		num;
 
 	info_size = 0;
 	i = 0;
@@ -55,19 +55,20 @@ int invalid_color(char *map)
 	return (FALSE);
 }
 
-int is_map_start(char *map_line)
+int	is_map_start(char *map_line)
 {
 	return (map_line[0] == '1' || map_line[0] == ' ');
 }
 
-int invalid_texture(char *map)
+int	invalid_texture(char *map)
 {
-	char *copy;
-	int file_name_size;
-	int fd;
+	char	*copy;
+	int		file_name_size;
+	int		fd;
 
 	file_name_size = 0;
-	if (ft_strncmp(map, "NO", 2) != 0 && ft_strncmp(map, "SO", 2) != 0 && ft_strncmp(map, "WE", 2) != 0 && ft_strncmp(map, "EA", 2) != 0)
+	if (ft_strncmp(map, "NO", 2) != 0 && ft_strncmp(map, "SO", 2) != 0
+		&& ft_strncmp(map, "WE", 2) != 0 && ft_strncmp(map, "EA", 2) != 0)
 	{
 		printf("Invalid identifier\n");
 		return (TRUE);
@@ -99,7 +100,7 @@ int invalid_texture(char *map)
 	return (FALSE);
 }
 
-char *get_identifier(char *line)
+char	*get_identifier(char *line)
 {
 	if (ft_strncmp(line, "NO ", 3) == 0)
 		return ("NO");
@@ -116,20 +117,20 @@ char *get_identifier(char *line)
 	return (NULL);
 }
 
-int has_all_identifiers(char **map)
+int	has_all_identifiers(char **map)
 {
-	static int NO;
-	static int SO;
-	static int WE;
-	static int EA;
-	static int F;
-	static int C;
-	char *identifier;
+	static int	NO;
+	static int	SO;
+	static int	WE;
+	static int	EA;
+	static int	F;
+	static int	C;
+	char		*identifier;
 
 	while (*map)
 	{
 		if (*map[0] == '1' || *map[0] == ' ')
-			break;
+			break ;
 		identifier = get_identifier(*map);
 		if (ft_strncmp(identifier, "NO", 2) == 0)
 			NO = TRUE;
@@ -148,13 +149,12 @@ int has_all_identifiers(char **map)
 	return (NO && SO && WE && EA && F && C);
 }
 
-int has_starting_position(char **map)
+int	has_starting_position(char **map)
 {
-	int i;
+	int	i;
 
 	while (*map)
 	{
-
 		i = 0;
 		while ((*map)[i])
 		{
@@ -167,9 +167,9 @@ int has_starting_position(char **map)
 	return (FALSE);
 }
 
-int has_invalid_characters(char **map)
+int	has_invalid_characters(char **map)
 {
-	int i;
+	int	i;
 
 	while (*map)
 	{
@@ -185,10 +185,11 @@ int has_invalid_characters(char **map)
 	return (FALSE);
 }
 
-int surrounded_by_walls(char **map)
+int	surrounded_by_walls(char **map)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
+	int	last_line;
 
 	// Replace player for 0
 	i = 0;
@@ -204,7 +205,7 @@ int surrounded_by_walls(char **map)
 		i++;
 	}
 	// Turn map into matrix
-	int last_line = ft_arrlen(map) - 1;
+	last_line = ft_arrlen(map) - 1;
 	// Iterate matrix and check if every 0 is surrounded by other 0 or 1
 	i = 0;
 	while (map[i])
@@ -243,11 +244,11 @@ int surrounded_by_walls(char **map)
 	return (TRUE);
 }
 
-char *get_map_error(char **map)
+char	*get_map_error(char **map)
 {
-	char *identifier;
-	static int identifiers_count;
-	char **identifier_found;
+	char		*identifier;
+	static int	identifiers_count;
+	char		**identifier_found;
 
 	if (!has_all_identifiers(map))
 		return ("At least 1 identifier is missing");

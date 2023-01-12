@@ -1,12 +1,13 @@
 #include "./include/cub3d.h"
 
-t_vector find_player(t_game *game)
+t_vector	find_player(t_game *game)
 {
-	t_vector player;
-	int i;
-	int j;
+	t_vector	player;
+	int			i;
+	int			j;
+	char		**map;
 
-	char **map = game->map;
+	map = game->map;
 	// skip texture lines
 	while (*map[0] != ' ' && *map[0] != '1')
 		map++;
@@ -26,7 +27,8 @@ t_vector find_player(t_game *game)
 				game->player_direction = 180;
 			if (ft_strchr("NSEW", map[i][j]))
 			{
-				game->direction_in_radian = game->player_direction * (M_PI / 180.0);
+				game->direction_in_radian = game->player_direction * (M_PI
+						/ 180.0);
 				player.x = j * MOVING_SPEED;
 				player.y = i * MOVING_SPEED;
 				return (player);
