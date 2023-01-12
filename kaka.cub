@@ -1,7 +1,7 @@
-NO ./texture
-SO ./texture
-WE ./texture
-EA ./texture
+NO ./images/circle-red.xpm
+SO ./images/circle-gray.xpm
+WE ./images/marble.xpm
+EA ./images/cement.xpm
 
 F 0,222,174
 C 232,200,93

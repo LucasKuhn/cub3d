@@ -35,10 +35,23 @@ static void set_colors(t_game *game, char *line)
 	free_matrix(colors);
 }
 
-/* void set_texture(t_game *game, char *line)
+void set_texture(t_game *game, char *line)
 {
+	t_image *temp;
 
-} */
+	if (*line == 'N')
+		temp = &game->textures.north;
+	if (*line == 'W')
+		temp = &game->textures.west;
+	if (*line == 'S')
+		temp = &game->textures.south;
+	if (*line == 'E')
+		temp = &game->textures.east;
+	line += 2;
+	while (*line == ' ')
+		line++;
+	*temp = new_xpm(game, line);
+}
 
 void load_map_textures(t_game *game)
 {
@@ -49,8 +62,8 @@ void load_map_textures(t_game *game)
 	{
 		if (game->map[i][0] == 'C' || game->map[i][0] == 'F')
 			set_colors(game, game->map[i]);
-/* 		if (game->map[i][0] == 'N' || game->map[i][0] != 'S' || game->map[i][0] != 'W' || game->map[i][0] != 'E')
-			set_texture(game, game->map[i]); */
+		if (game->map[i][0] == 'N' || game->map[i][0] == 'S' || game->map[i][0] == 'W' || game->map[i][0] == 'E')
+			set_texture(game, game->map[i]);
 		i++;
 	}
 }

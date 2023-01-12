@@ -120,7 +120,6 @@ int valid_extension(char *map_name);
 char *ft_strndup(char *str, int n);
 void free_matrix(char **ptr);
 size_t ft_arrlen(char **arr);
-void load_map_textures(t_game *game);
 
 // Keycode helpers
 int is_movement(int keycode);
@@ -139,5 +138,7 @@ void cast_rays(t_game *game, t_ray rays[]);
 // Draw utils
 void draw_player(t_game *game);
 void draw_direction(t_game *game);
+void load_map_textures(t_game *game);
+t_image new_xpm(t_game *game, char *path);
 
 #endif
