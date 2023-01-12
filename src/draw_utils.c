@@ -62,7 +62,7 @@ void load_map_textures(t_game *game)
 	{
 		if (game->map[i][0] == 'C' || game->map[i][0] == 'F')
 			set_colors(game, game->map[i]);
-		if (game->map[i][0] == 'N' || game->map[i][0] != 'S' || game->map[i][0] != 'W' || game->map[i][0] != 'E')
+		if (game->map[i][0] == 'N' || game->map[i][0] == 'S' || game->map[i][0] == 'W' || game->map[i][0] == 'E')
 			set_texture(game, game->map[i]);
 		i++;
 	}

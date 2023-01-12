@@ -1,7 +1,7 @@
-NO ./images/north.xpm
-SO ./images/north.xpm
-WE ./images/north.xpm
-EA ./images/north.xpm
+NO ./images/circle-red.xpm
+SO ./images/circle-gray.xpm
+WE ./images/marble.xpm
+EA ./images/cement.xpm
 
 F 0,222,174
 C 232,200,93
