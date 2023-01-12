@@ -1,17 +1,17 @@
 #include "./include/cub3d.h"
 
-char *ft_strndup(char *str, int n)
+char	*ft_strndup(char *str, int n)
 {
-	char *ptr;
+	char	*ptr;
 
 	ptr = ft_calloc(n + 1, sizeof(char));
 	ft_strlcpy(ptr, str, n);
 	return (ptr);
 }
 
-void free_matrix(char **ptr)
+void	free_matrix(char **ptr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (ptr[i] != NULL)
@@ -22,9 +22,9 @@ void free_matrix(char **ptr)
 	free(ptr);
 }
 
-size_t ft_arrlen(char **arr)
+size_t	ft_arrlen(char **arr)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (arr[i])

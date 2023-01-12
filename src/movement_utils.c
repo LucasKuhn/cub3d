@@ -1,6 +1,6 @@
 #include "./include/cub3d.h"
 
-void change_direction(int keycode, t_game *game)
+void	change_direction(int keycode, t_game *game)
 {
 	if (keycode == LEFT_ARROW)
 	{
@@ -18,14 +18,16 @@ void change_direction(int keycode, t_game *game)
 	}
 }
 
-void move_player(int keycode, t_game *game)
+void	move_player(int keycode, t_game *game)
 {
-	double x_component = cos(game->direction_in_radian) * MOVING_SPEED;
-	double y_component = sin(game->direction_in_radian) * MOVING_SPEED;
+	double	x_component;
+	double	y_component;
+	int		new_player_x;
+	int		new_player_y;
+	double	rad;
 
-	int new_player_x;
-	int new_player_y;
-
+	x_component = cos(game->direction_in_radian) * MOVING_SPEED;
+	y_component = sin(game->direction_in_radian) * MOVING_SPEED;
 	if (keycode == W_KEY)
 	{
 		new_player_y = game->player.y - 1 * y_component;
@@ -38,7 +40,7 @@ void move_player(int keycode, t_game *game)
 	}
 	if (keycode == A_KEY)
 	{
-		double rad = game->direction_in_radian + (M_PI / 2);
+		rad = game->direction_in_radian + (M_PI / 2);
 		x_component = cos(rad) * (MOVING_SPEED / 2);
 		y_component = sin(rad) * (MOVING_SPEED / 2);
 		new_player_y = game->player.y - 1 * y_component;
@@ -46,7 +48,7 @@ void move_player(int keycode, t_game *game)
 	}
 	if (keycode == D_KEY)
 	{
-		double rad = game->direction_in_radian - (M_PI / 2);
+		rad = game->direction_in_radian - (M_PI / 2);
 		x_component = cos(rad) * (MOVING_SPEED / 2);
 		y_component = sin(rad) * (MOVING_SPEED / 2);
 		new_player_y = game->player.y - 1 * y_component;

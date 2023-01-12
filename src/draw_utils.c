@@ -1,26 +1,30 @@
 #include "./include/cub3d.h"
 
-void draw_direction(t_game *game)
+void	draw_direction(t_game *game)
 {
-	int x;
-	int y;
+	int		x;
+	int		y;
+	int		i;
+	double	d_x;
+	double	d_y;
 
-	int i = 0;
-	double d_x = 0;
-	double d_y = 0;
+	i = 0;
+	d_x = 0;
+	d_y = 0;
 	while (i < 10)
 	{
 		d_x += cos(game->direction_in_radian + M_PI);
 		d_y += sin(game->direction_in_radian + M_PI);
-		mlx_pixel_put(game->mlx, game->win, game->player.x + d_x, game->player.y - d_y, 0x00FFFFFF);
+		mlx_pixel_put(game->mlx, game->win, game->player.x + d_x, game->player.y
+				- d_y, 0x00FFFFFF);
 		i++;
 	}
 }
 
-static void set_colors(t_game *game, char *line)
+static void	set_colors(t_game *game, char *line)
 {
-	int *temp;
-	char **colors;
+	int		*temp;
+	char	**colors;
 
 	if (*line == 'F')
 		temp = game->floor;
@@ -35,9 +39,9 @@ static void set_colors(t_game *game, char *line)
 	free_matrix(colors);
 }
 
-void set_texture(t_game *game, char *line)
+void	set_texture(t_game *game, char *line)
 {
-	t_image *temp;
+	t_image	*temp;
 
 	if (*line == 'N')
 		temp = &game->textures.north;
@@ -53,16 +57,17 @@ void set_texture(t_game *game, char *line)
 	*temp = new_xpm(game, line);
 }
 
-void load_map_textures(t_game *game)
+void	load_map_textures(t_game *game)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (game->map[i][0] != ' ' && game->map[i][0] != '1')
 	{
 		if (game->map[i][0] == 'C' || game->map[i][0] == 'F')
 			set_colors(game, game->map[i]);
-		if (game->map[i][0] == 'N' || game->map[i][0] == 'S' || game->map[i][0] == 'W' || game->map[i][0] == 'E')
+		if (game->map[i][0] == 'N' || game->map[i][0] == 'S'
+			|| game->map[i][0] == 'W' || game->map[i][0] == 'E')
 			set_texture(game, game->map[i]);
 		i++;
 	}
