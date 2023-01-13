@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/13 11:35:49 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/13 19:46:03 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ int				is_direction(int keycode);
 // Movement utils
 void			change_direction(int keycode, t_game *game);
 void			move_player(int keycode, t_game *game);
+int				can_move_player(int keycode, t_game *game);
 
 // Main render screen function
 void			render_screen(t_game *game);

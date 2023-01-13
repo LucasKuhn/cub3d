@@ -26,37 +26,65 @@ void	move_player(int keycode, t_game *game)
 	int		new_player_y;
 	double	rad;
 
-	x_component = cos(game->direction_in_radian) * MOVING_SPEED;
-	y_component = sin(game->direction_in_radian) * MOVING_SPEED;
 	if (keycode == W_KEY)
 	{
-		new_player_y = game->player.y - 1 * y_component;
-		new_player_x = game->player.x + 1 * x_component;
+		rad = game->direction_in_radian + 0;
 	}
 	if (keycode == S_KEY)
 	{
-		new_player_y = game->player.y + 1 * y_component;
-		new_player_x = game->player.x - 1 * x_component;
+		rad = game->direction_in_radian + M_PI;
 	}
 	if (keycode == A_KEY)
 	{
 		rad = game->direction_in_radian + (M_PI / 2);
-		x_component = cos(rad) * (MOVING_SPEED / 2);
-		y_component = sin(rad) * (MOVING_SPEED / 2);
-		new_player_y = game->player.y - 1 * y_component;
-		new_player_x = game->player.x + 1 * x_component;
 	}
 	if (keycode == D_KEY)
 	{
 		rad = game->direction_in_radian - (M_PI / 2);
-		x_component = cos(rad) * (MOVING_SPEED / 2);
-		y_component = sin(rad) * (MOVING_SPEED / 2);
-		new_player_y = game->player.y - 1 * y_component;
-		new_player_x = game->player.x + 1 * x_component;
 	}
-	if (game->map[new_player_y / 10][new_player_x / 10] != '1')
+	x_component = cos(rad) * MOVING_SPEED;
+	y_component = sin(rad) * MOVING_SPEED;
+	game->player.y = game->player.y - 1 * y_component;
+	game->player.x = game->player.x + 1 * x_component;
+}
+
+int	can_move_player(int keycode, t_game *game)
+{
+	double	x_component;
+	double	y_component;
+	int		new_player_x;
+	int		new_player_y;
+	double	rad;
+
+	if (keycode == W_KEY)
 	{
-		game->player.y = new_player_y;
-		game->player.x = new_player_x;
+		rad = game->direction_in_radian + 0;
 	}
+	if (keycode == S_KEY)
+	{
+		rad = game->direction_in_radian + M_PI;
+	}
+	if (keycode == A_KEY)
+	{
+		rad = game->direction_in_radian + (M_PI / 2);
+	}
+	if (keycode == D_KEY)
+	{
+		rad = game->direction_in_radian - (M_PI / 2);
+	}
+	x_component = cos(rad) * MOVING_SPEED;
+	y_component = sin(rad) * MOVING_SPEED;
+	new_player_y = (game->player.y - 1 * y_component) / 10;
+	new_player_x = (game->player.x + 1 * x_component) / 10;
+	if (game->map[new_player_y][new_player_x] == '1')
+		return (FALSE);
+	if (game->map[new_player_y + 1][new_player_x + 1] == '1')
+		return (FALSE);
+	if (game->map[new_player_y - 1][new_player_x - 1] == '1')
+		return (FALSE);
+	if (game->map[new_player_y + 1][new_player_x - 1] == '1')
+		return (FALSE);
+	if (game->map[new_player_y - 1][new_player_x + 1] == '1')
+		return (FALSE);
+	return (TRUE);
 }

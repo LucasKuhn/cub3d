@@ -24,7 +24,10 @@ int	key_hook(int keycode, t_game *game)
 	if (is_direction(keycode))
 		change_direction(keycode, game);
 	if (is_movement(keycode))
-		move_player(keycode, game);
+	{
+		if (can_move_player(keycode,game))
+			move_player(keycode, game);
+	}
 	render_screen(game);
 	return (0);
 }
