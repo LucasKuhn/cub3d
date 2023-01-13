@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/13 11:35:49 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/13 16:20:28 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ typedef struct s_game
 {
 	void		*mlx;
 	void		*win;
-	char		*map_name;
 	char		**map;
 	char		**map_original;
 	int			floor[3];
@@ -141,7 +140,7 @@ void			cast_rays(t_game *game, t_ray rays[]);
 // Draw utils
 void			draw_player(t_game *game);
 void			draw_direction(t_game *game);
-void			load_map_textures(t_game *game);
+void			load_textures(t_game *game);
 t_image			new_xpm(t_game *game, char *path);
 
 #endif

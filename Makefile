@@ -1,6 +1,6 @@
 NAME		=	cub3D
 MLXFLAGS	=	-lmlx -Ilmlx -lXext -lX11
-
+CFLAGS		=	-g -fsanitize=address
 SRC_DIR		=	src
 SRCS		=	$(addprefix $(SRC_DIR)/, get_map_error.c main.c \
 				valid_extension.c draw_minimap.c keycode_helpers.c \
