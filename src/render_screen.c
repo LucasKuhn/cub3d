@@ -10,7 +10,7 @@ void	draw_image_column(t_game *game, t_ray ray, int column)
 	int		current_texture_y;
 
 	double offset; // difference between the column height and the screen height
-	column_height = (HEIGHT / ray.size) * 5;
+	column_height = (HEIGHT / ray.size) * 15;
 	offset = ceil((HEIGHT - column_height) / 2);
 	y = 1;
 	while (y < offset) // THIS DRAWS THE CEILING
@@ -30,13 +30,16 @@ void	draw_image_column(t_game *game, t_ray ray, int column)
 		texture_y = 0;
 	else // start with an offset
 		texture_y = (((ray.texture.size.y / step_y) - HEIGHT) / 2) * step_y;
+	if (ray.vertical_hit)
+		texture_offset_x = (int)((ray.y * ray.texture.size.x) / 10) % 256 * 4;
+	else
+		texture_offset_x = (int)((ray.x * ray.texture.size.x) / 10) % 256 * 4;
 	while (y < HEIGHT - offset) // THIS DRAWS THE textures.frame
 	{
 		int pixel = (y * game->textures.frame.line_size) + (column * 4);
 			// change the 'offset' to top offset the dist
 		if (pixel > HEIGHT * WIDTH * 4)
-			break ;
-		texture_offset_x = (column % 256) * 4;
+			break ;		
 		current_texture_y = (int)floor(texture_y);
 		game->textures.frame.pixels[pixel
 			+ 0] = ray.texture.pixels[(current_texture_y * ray.texture.line_size

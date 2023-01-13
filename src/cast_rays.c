@@ -54,7 +54,7 @@ void	cast_rays(t_game *game, t_ray rays[])
 
 	hit = 0;
 	n_rays = 0;
-	fov = (M_PI / 2);
+	fov = (M_PI / 3);
 	direction = game->direction_in_radian + (fov / 2);
 	step_size = fov / WIDTH;
 	while (n_rays < WIDTH)
@@ -85,6 +85,9 @@ void	cast_rays(t_game *game, t_ray rays[])
 				rays[n_rays].size = size;
 				rays[n_rays].texture = get_wall_texture(game, direction,
 						vertical_hit);
+				rays[n_rays].vertical_hit = vertical_hit;
+				rays[n_rays].x = x;
+				rays[n_rays].y = y;
 			}
 		}
 		n_rays++;
