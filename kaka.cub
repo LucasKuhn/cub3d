@@ -1,7 +1,7 @@
-NO ./images/circle-red.xpm
-SO ./images/circle-gray.xpm
+NO ./images/brick-3.xpm
+SO ./images/cement.xpm
 WE ./images/marble.xpm
-EA ./images/cement.xpm
+EA ./images/circle-red.xpm
 
 F 0,222,174
 C 232,200,93
