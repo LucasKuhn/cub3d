@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/16 16:16:45 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/16 19:12:42 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,14 @@ typedef struct s_ray
 void			draw_minimap(t_game *game);
 void			move_player(int keycode, t_game *game);
 void			draw_3d_view(t_game *game);
-char			*get_map_error(char **map);
 t_vector		find_player(char **map);
 void			set_player_directions(t_game *game);
 char			**load_map(char *map_name);
 int				valid_extension(char *map_name);
+
+// Error checking 
+char			*get_map_error(char **map);
+int				surrounded_by_walls(char **map);
 
 // Utils
 char			*ft_strndup(char *str, int n);

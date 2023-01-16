@@ -5,7 +5,7 @@ SRC_DIR		=	src
 SRCS		=	$(addprefix $(SRC_DIR)/, get_map_error.c main.c \
 				valid_extension.c draw_minimap.c keycode_helpers.c \
 				movement_utils.c find_player.c load_map.c utils.c\
-				render_screen.c cast_rays.c draw_utils.c)
+				render_screen.c cast_rays.c draw_utils.c surrounded_by_walls.c)
 
 OBJ_DIR		=	obj
 OBJS		=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
