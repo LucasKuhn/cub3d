@@ -32,13 +32,6 @@ int	key_hook(int keycode, t_game *game)
 	return (0);
 }
 
-void	exit_error(char *str)
-{
-	printf("Error\n");
-	printf("%s\n", str);
-	exit(1);
-}
-
 void	exit_map_error(t_game *game, char *map_error)
 {
 	free_matrix(game->map);
@@ -61,8 +54,9 @@ int cub3d(char *map_name)
 	char	*map_error;
 
 	game.map = load_map(map_name);
-	game.map_original = load_map(map_name);
-	game.player = find_player(&game);
+	game.map_original = game.map;
+	game.player = find_player(game.map);
+	set_player_directions(&game);
 	map_error = get_map_error(game.map);
 	if (map_error)
 		exit_map_error(&game, map_error);
