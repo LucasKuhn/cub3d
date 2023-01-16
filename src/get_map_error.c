@@ -117,14 +117,32 @@ char	*get_identifier(char *line)
 	return (NULL);
 }
 
-int	has_all_identifiers(char **map)
+int has_all_colors(char **map)
+{
+	static int	F;
+	static int	C;
+	char		*identifier;
+
+	while (*map)
+	{
+		if (*map[0] == '1' || *map[0] == ' ')
+			break ;
+		identifier = get_identifier(*map);
+		if (ft_strncmp(identifier, "F", 2) == 0)
+			F = TRUE;
+		if (ft_strncmp(identifier, "C", 2) == 0)
+			C = TRUE;
+		map++;
+	}
+	return (F && C);
+}
+
+int	has_all_textures(char **map)
 {
 	static int	NO;
 	static int	SO;
 	static int	WE;
 	static int	EA;
-	static int	F;
-	static int	C;
 	char		*identifier;
 
 	while (*map)
@@ -140,10 +158,6 @@ int	has_all_identifiers(char **map)
 			WE = TRUE;
 		if (ft_strncmp(identifier, "EA", 2) == 0)
 			EA = TRUE;
-		if (ft_strncmp(identifier, "F", 2) == 0)
-			F = TRUE;
-		if (ft_strncmp(identifier, "C", 2) == 0)
-			C = TRUE;
 		map++;
 	}
 	return (NO && SO && WE && EA && F && C);
@@ -244,10 +258,12 @@ int	surrounded_by_walls(char **map)
 	return (TRUE);
 }
 
-int identifier_is_valid(char *identifier, char *map)
+int identifier_is_valid(char *map)
 {
 	int identifier_size;
+	char *identifier;
 
+	identifier = get_identifier(map);
 	if (!identifier)
 		return (FALSE);
 	identifier_size = ft_strlen(identifier);
@@ -266,12 +282,11 @@ char	*get_map_error(char **map)
 	static int	identifiers_count;
 	char		**identifier_found;
 
-	if (!has_all_identifiers(map))
-		return ("At least 1 identifier is missing");
+	if (!has_all_textures(map) || !has_all_colors(map))
+		return ("Map is missing identifiers");
 	while (*map && !is_map_start(*map))
-	{
-		identifier = get_identifier(*map);
-		if (!identifier_is_valid(identifier, *map))
+	{		
+		if (!identifier_is_valid(*map))
 			return ("Invalid identifier");
 		identifiers_count++;
 		if (identifiers_count > 6)
