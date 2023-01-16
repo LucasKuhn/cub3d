@@ -244,6 +244,22 @@ int	surrounded_by_walls(char **map)
 	return (TRUE);
 }
 
+int identifier_is_valid(char *identifier, char *map)
+{
+	int identifier_size;
+
+	if (!identifier)
+		return (FALSE);
+	identifier_size = ft_strlen(identifier);
+	if (identifier_size > 2)
+		return (FALSE);
+	if (identifier_size == 2 && invalid_texture(map))
+		return (FALSE);
+	if (identifier_size == 1 && invalid_color(map))
+		return (FALSE);
+	return (TRUE);
+}
+
 char	*get_map_error(char **map)
 {
 	char		*identifier;
@@ -255,13 +271,9 @@ char	*get_map_error(char **map)
 	while (*map && !is_map_start(*map))
 	{
 		identifier = get_identifier(*map);
-		if (!identifier)
+		if (!identifier_is_valid(identifier, *map))
 			return ("Invalid identifier");
 		identifiers_count++;
-		if (ft_strlen(identifier) == 2 && invalid_texture(*map))
-			return ("Invalid texture");
-		if (ft_strlen(identifier) == 1 && invalid_color(*map))
-			return ("Invalid color");
 		if (identifiers_count > 6)
 			return ("Too many identifiers");
 		map++;
