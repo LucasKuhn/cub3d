@@ -57,7 +57,17 @@ void	set_texture(t_game *game, char *line)
 	*temp = new_xpm(game, line);
 }
 
-void	load_map_textures(t_game *game)
+t_image	new_image(t_game *game, int width, int height)
+{
+	t_image	img;
+
+	img.ptr = mlx_new_image(game->mlx, width, height);
+	img.pixels = mlx_get_data_addr(img.ptr, &img.bits, &img.line_size,
+			&img.endian);
+	return (img);
+}
+
+void	load_textures(t_game *game)
 {
 	int i;
 
@@ -71,4 +81,9 @@ void	load_map_textures(t_game *game)
 			set_texture(game, game->map[i]);
 		i++;
 	}
+	while (*(game->map)[0] != ' ' && *(game->map)[0] != '1')
+		game->map++;
+	game->textures.frame = new_image(game, WIDTH, HEIGHT);
+	game->textures.cube = new_xpm(game, "./images/gray10.xpm");
+	game->textures.player = new_xpm(game, "./images/yellow3x3.xpm");
 }

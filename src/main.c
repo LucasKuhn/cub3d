@@ -32,11 +32,17 @@ int	key_hook(int keycode, t_game *game)
 	return (0);
 }
 
-int	exit_error(char *str)
+void	exit_error(char *str)
 {
 	printf("Error\n");
 	printf("%s\n", str);
 	exit(1);
+}
+
+void	exit_map_error(t_game *game, char *map_error)
+{
+	free_matrix(game->map);
+	exit_error(map_error);
 }
 
 t_image	new_xpm(t_game *game, char *path)
@@ -49,52 +55,31 @@ t_image	new_xpm(t_game *game, char *path)
 	return (img);
 }
 
-t_image	new_image(t_game *game, int width, int height)
+int cub3d(char *map_name)
 {
-	t_image	img;
+	t_game	game;
+	char	*map_error;
 
-	img.ptr = mlx_new_image(game->mlx, width, height);
-	img.pixels = mlx_get_data_addr(img.ptr, &img.bits, &img.line_size,
-			&img.endian);
-	return (img);
-}
-
-int	run_game(t_game game)
-{
+	game.map = load_map(map_name);
+	game.map_original = load_map(map_name);
+	game.player = find_player(&game);
+	map_error = get_map_error(game.map);
+	if (map_error)
+		exit_map_error(&game, map_error);
+	game.mlx = mlx_init();
+	game.win = mlx_new_window(game.mlx, WIDTH, HEIGHT, "cub3D");
+	load_textures(&game);
 	mlx_hook(game.win, BTN_X, NO_EVENT, close_game, &game);
-	mlx_hook(game.win, 02, 1L << 0, key_hook, &game);
-	game.textures.frame = new_image(&game, WIDTH, HEIGHT);
-	game.textures.cube = new_xpm(&game, "./images/gray10.xpm");
-	game.textures.player = new_xpm(&game, "./images/yellow3x3.xpm");
-	render_screen(&game);
+	mlx_hook(game.win, 02, 1L << 0, key_hook, &game);render_screen(&game);
 	mlx_loop(game.mlx);
 	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	t_game	game;
-	char	*map_error;
-
 	if (argc < 2)
 		exit_error("Please provide a map");
-	game.map_name = argv[1];
-	if (!valid_extension(game.map_name))
+	if (!valid_extension(argv[1]))
 		exit_error("Invalid map extension");
-	game.map = load_map(game.map_name);
-	game.map_original = game.map;
-	game.player = find_player(&game);
-	map_error = get_map_error(game.map);
-	if (map_error)
-	{
-		free_matrix(game.map);
-		exit_error(map_error);
-	}
-	game.mlx = mlx_init();
-	game.win = mlx_new_window(game.mlx, WIDTH, HEIGHT, "cub3D");
-	load_map_textures(&game);
-	while (*game.map[0] != ' ' && *game.map[0] != '1')
-		game.map++;
-	run_game(game);
-	return (0);
+	return(cub3d(argv[1]));
 }
