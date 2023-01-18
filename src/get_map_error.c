@@ -1,13 +1,5 @@
 #include "./include/cub3d.h"
 
-// TODO: THIS IS TRASH! NOT OK! PLEASE FIX ME!
-int		found_NO = FALSE;
-int		found_SO = FALSE;
-int		found_WE = FALSE;
-int		found_EA = FALSE;
-int		found_F = FALSE;
-int		found_C = FALSE;
-
 int	invalid_color(char *map)
 {
 	char	**colors;
@@ -20,10 +12,6 @@ int	invalid_color(char *map)
 	i = 0;
 	if (*map != 'F' && *map != 'C')
 		return (TRUE);
-	if (*map == 'F')
-		found_F = TRUE;
-	if (*map == 'C')
-		found_C = TRUE;
 	map++;
 	while (*map == ' ')
 		map++;
@@ -69,18 +57,7 @@ int	invalid_texture(char *map)
 	file_name_size = 0;
 	if (ft_strncmp(map, "NO", 2) != 0 && ft_strncmp(map, "SO", 2) != 0
 		&& ft_strncmp(map, "WE", 2) != 0 && ft_strncmp(map, "EA", 2) != 0)
-	{
-		printf("Invalid identifier\n");
 		return (TRUE);
-	}
-	if (ft_strncmp(map, "NO", 2) == 0)
-		found_NO = TRUE;
-	if (ft_strncmp(map, "SO", 2) == 0)
-		found_SO = TRUE;
-	if (ft_strncmp(map, "WE", 2) == 0)
-		found_WE = TRUE;
-	if (ft_strncmp(map, "EA", 2) == 0)
-		found_EA = TRUE;
 	map += 2;
 	while (*map == ' ')
 		map++;
@@ -117,14 +94,32 @@ char	*get_identifier(char *line)
 	return (NULL);
 }
 
-int	has_all_identifiers(char **map)
+int has_all_colors(char **map)
+{
+	static int	F;
+	static int	C;
+	char		*identifier;
+
+	while (*map)
+	{
+		if (*map[0] == '1' || *map[0] == ' ')
+			break ;
+		identifier = get_identifier(*map);
+		if (ft_strncmp(identifier, "F", 2) == 0)
+			F = TRUE;
+		if (ft_strncmp(identifier, "C", 2) == 0)
+			C = TRUE;
+		map++;
+	}
+	return (F && C);
+}
+
+int	has_all_textures(char **map)
 {
 	static int	NO;
 	static int	SO;
 	static int	WE;
 	static int	EA;
-	static int	F;
-	static int	C;
 	char		*identifier;
 
 	while (*map)
@@ -140,10 +135,6 @@ int	has_all_identifiers(char **map)
 			WE = TRUE;
 		if (ft_strncmp(identifier, "EA", 2) == 0)
 			EA = TRUE;
-		if (ft_strncmp(identifier, "F", 2) == 0)
-			F = TRUE;
-		if (ft_strncmp(identifier, "C", 2) == 0)
-			C = TRUE;
 		map++;
 	}
 	return (NO && SO && WE && EA && F && C);
@@ -185,62 +176,21 @@ int	has_invalid_characters(char **map)
 	return (FALSE);
 }
 
-int	surrounded_by_walls(char **map)
+int identifier_is_valid(char *map)
 {
-	int	i;
-	int	j;
-	int	last_line;
+	int identifier_size;
+	char *identifier;
 
-	// Replace player for 0
-	i = 0;
-	while (map[i])
-	{
-		j = 0;
-		while (map[i][j])
-		{
-			if (ft_strchr("NSEW", map[i][j]) != NULL)
-				map[i][j] = '0';
-			j++;
-		}
-		i++;
-	}
-	// Turn map into matrix
-	last_line = ft_arrlen(map) - 1;
-	// Iterate matrix and check if every 0 is surrounded by other 0 or 1
-	i = 0;
-	while (map[i])
-	{
-		j = 0;
-		while (map[i][j])
-		{
-			if (map[i][j] == '0')
-			{
-				/* printf("Found 0 on [%d][%d]\n", i, j); */
-				// Can't have a 0 on the first line or the last line
-				if (i == 0 || i == last_line)
-					return (FALSE);
-				// Can't have an open space to the right
-				if (map[i][j + 1] != '1' && map[i][j + 1] != '0')
-					return (FALSE);
-				// Can't have an open space to the left
-				if (map[i][j - 1] != '1' && map[i][j - 1] != '0')
-					return (FALSE);
-				// Can't have an open space above
-				if (ft_strlen(map[i - 1]) < i)
-					return (FALSE);
-				if (map[i - 1][j] != '1' && map[i - 1][j] != '0')
-					return (FALSE);
-				// Can't have an open space below
-				if (ft_strlen(map[i + 1]) < i)
-					return (FALSE);
-				if (map[i + 1][j] != '1' && map[i + 1][j] != '0')
-					return (FALSE);
-			}
-			j++;
-		}
-		i++;
-	}
-	// TODO: Reload map, since we changed the original
+	identifier = get_identifier(map);
+	if (!identifier)
+		return (FALSE);
+	identifier_size = ft_strlen(identifier);
+	if (identifier_size > 2)
+		return (FALSE);
+	if (identifier_size == 2 && invalid_texture(map))
+		return (FALSE);
+	if (identifier_size == 1 && invalid_color(map))
+		return (FALSE);
 	return (TRUE);
 }
 
@@ -250,18 +200,13 @@ char	*get_map_error(char **map)
 	static int	identifiers_count;
 	char		**identifier_found;
 
-	if (!has_all_identifiers(map))
-		return ("At least 1 identifier is missing");
+	if (!has_all_textures(map) || !has_all_colors(map))
+		return ("Map is missing identifiers");
 	while (*map && !is_map_start(*map))
-	{
-		identifier = get_identifier(*map);
-		if (!identifier)
+	{		
+		if (!identifier_is_valid(*map))
 			return ("Invalid identifier");
 		identifiers_count++;
-		if (ft_strlen(identifier) == 2 && invalid_texture(*map))
-			return ("Invalid texture");
-		if (ft_strlen(identifier) == 1 && invalid_color(*map))
-			return ("Invalid color");
 		if (identifiers_count > 6)
 			return ("Too many identifiers");
 		map++;

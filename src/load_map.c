@@ -1,30 +1,47 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   load_map.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/16 15:43:12 by lalex-ku          #+#    #+#             */
+/*   Updated: 2023/01/16 16:01:35 by lalex-ku         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./include/cub3d.h"
+
+int	get_file_size(char *map_name)
+{
+	int		fd;
+	int		size;
+	char	buffer[1];
+
+	size = 0;
+	fd = open(map_name, O_RDONLY);
+	while (read(fd, buffer, 1))
+		size++;
+	return (size);
+	close(fd);
+}
 
 char	**load_map(char *map_name)
 {
-	static char	buffer[2];
-	char		**returned;
-	char		*map;
-	char		*ref;
-	int			n_read;
-	int			fd;
+	char	*file;
+	char	**map;
+	int		fd;
+	int		file_size;
 
+	file_size = get_file_size(map_name);
 	fd = open(map_name, O_RDONLY);
 	if (fd <= 0)
 		return (NULL);
-	map = ft_strdup("");
-	n_read = 1;
-	while (n_read)
-	{
-		n_read = read(fd, buffer, 1);
-		if (n_read == -1)
-			return (NULL);
-		ref = map;
-		map = ft_strjoin(map, buffer);
-		free(ref);
-	}
+	file = malloc(sizeof(char) * (file_size + 1));
+	read(fd, file, file_size);
+	file[file_size] = '\0';
 	close(fd);
-	returned = ft_split(map, '\n');
-	free(map);
-	return (returned);
+	map = ft_split(file, '\n');
+	free(file);
+	return (map);
 }

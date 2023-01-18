@@ -31,3 +31,10 @@ size_t	ft_arrlen(char **arr)
 		i++;
 	return (i);
 }
+
+void	exit_error(char *str)
+{
+	printf("Error\n");
+	printf("%s\n", str);
+	exit(1);
+}
