@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   load_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:43:12 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/16 16:01:35 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/18 21:16:41 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/cub3d.h"
 
-int	get_file_size(char *map_name)
+static int	get_file_size(char *map_name)
 {
 	int		fd;
 	int		size;

@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 13:57:33 by lucferna          #+#    #+#             */
-/*   Updated: 2023/01/18 18:37:43 by lucferna         ###   ########.fr       */
+/*   Updated: 2023/01/18 21:23:55 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	draw_direction(t_game *game)
 	}
 }
 
-static void	set_colors(t_game *game, char *line)
+void	set_colors(t_game *game, char *line)
 {
 	int		*temp;
 	char	**colors;
@@ -79,23 +79,12 @@ t_image	new_image(t_game *game, int width, int height)
 	return (img);
 }
 
-void	load_textures(t_game *game)
+t_image	new_xpm(t_game *game, char *path)
 {
-	int	i;
+	t_image	img;
 
-	i = 0;
-	while (game->map[i][0] != ' ' && game->map[i][0] != '1')
-	{
-		if (game->map[i][0] == 'C' || game->map[i][0] == 'F')
-			set_colors(game, game->map[i]);
-		if (game->map[i][0] == 'N' || game->map[i][0] == 'S'
-			|| game->map[i][0] == 'W' || game->map[i][0] == 'E')
-			set_texture(game, game->map[i]);
-		i++;
-	}
-	while (*(game->map)[0] != ' ' && *(game->map)[0] != '1')
-		game->map++;
-	game->textures.frame = new_image(game, WIDTH, HEIGHT);
-	game->textures.cube = new_xpm(game, "./images/gray10.xpm");
-	game->textures.player = new_xpm(game, "./images/yellow3x3.xpm");
+	img.ptr = mlx_xpm_file_to_image(game->mlx, path, &img.size.x, &img.size.y);
+	img.pixels = mlx_get_data_addr(img.ptr, &img.bits, &img.line_size,
+			&img.endian);
+	return (img);
 }
