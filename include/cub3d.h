@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/16 19:12:42 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/18 13:19:29 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,15 +118,21 @@ void			set_player_directions(t_game *game);
 char			**load_map(char *map_name);
 int				valid_extension(char *map_name);
 
-// Error checking 
+// Error checking
 char			*get_map_error(char **map);
 int				surrounded_by_walls(char **map);
+int				has_all_textures(char **map);
+int				has_starting_position(char **map);
+int				has_invalid_characters(char **map);
+int				has_all_colors(char **map);
+char			*get_identifier(char *line);
 
 // Utils
 char			*ft_strndup(char *str, int n);
 void			free_matrix(char **ptr);
 size_t			ft_arrlen(char **arr);
 void			exit_error(char *str);
+int				is_map_start(char *map_line);
 
 // Keycode helpers
 int				is_movement(int keycode);

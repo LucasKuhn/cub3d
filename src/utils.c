@@ -38,3 +38,8 @@ void	exit_error(char *str)
 	printf("%s\n", str);
 	exit(1);
 }
+
+int	is_map_start(char *map_line)
+{
+	return (map_line[0] == '1' || map_line[0] == ' ');
+}
