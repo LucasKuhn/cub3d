@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/18 13:19:29 by lucferna         ###   ########.fr       */
+/*   Updated: 2023/01/18 19:26:02 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 # define MOVING_SPEED 5
 
 # define ONE_RAD 0.0174533
+# define FOV M_PI / 3
 
 # define DEG_TO_RAD(n) (n * (M_PI / 180.0))
 
@@ -87,6 +88,15 @@ typedef struct s_textures
 	t_image		cube;
 }				t_textures;
 
+typedef struct s_ray
+{
+	double		size;
+	t_image		texture;
+	double		x;
+	double		y;
+	int			vertical_hit;
+}				t_ray;
+
 typedef struct s_game
 {
 	void		*mlx;
@@ -99,16 +109,9 @@ typedef struct s_game
 	int			player_direction;
 	double		direction_in_radian;
 	t_textures	textures;
+	t_ray		*rays;
 }				t_game;
 
-typedef struct s_ray
-{
-	double		size;
-	t_image		texture;
-	double		x;
-	double		y;
-	int			vertical_hit;
-}				t_ray;
 
 void			draw_minimap(t_game *game);
 void			move_player(int keycode, t_game *game);
@@ -147,7 +150,7 @@ int				can_move_player(int keycode, t_game *game);
 void			render_screen(t_game *game);
 
 // Raycasting
-void			cast_rays(t_game *game, t_ray rays[]);
+void			cast_rays(t_game *game);
 
 // Draw utils
 void			draw_player(t_game *game);

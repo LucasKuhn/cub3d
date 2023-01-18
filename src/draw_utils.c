@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/18 13:57:33 by lucferna          #+#    #+#             */
+/*   Updated: 2023/01/18 18:37:43 by lucferna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./include/cub3d.h"
 
 void	draw_direction(t_game *game)
@@ -13,10 +25,10 @@ void	draw_direction(t_game *game)
 	d_y = 0;
 	while (i < 10)
 	{
-		d_x += cos(game->direction_in_radian + M_PI);
-		d_y += sin(game->direction_in_radian + M_PI);
+		d_x += cos(game->direction_in_radian);
+		d_y += sin(game->direction_in_radian);
 		mlx_pixel_put(game->mlx, game->win, game->player.x + d_x, game->player.y
-				- d_y, 0x00FFFFFF);
+			- d_y, 0x00FFFFFF);
 		i++;
 	}
 }
@@ -69,7 +81,7 @@ t_image	new_image(t_game *game, int width, int height)
 
 void	load_textures(t_game *game)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (game->map[i][0] != ' ' && game->map[i][0] != '1')

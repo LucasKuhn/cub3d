@@ -12,6 +12,7 @@ int	close_game(t_game *game)
 	mlx_destroy_window(game->mlx, game->win);
 	mlx_destroy_display(game->mlx);
 	free_matrix(game->map_original);
+	free(game->rays);
 	free(game->mlx);
 	exit(0);
 	return (0);
@@ -60,11 +61,13 @@ int cub3d(char *map_name)
 	map_error = get_map_error(game.map);
 	if (map_error)
 		exit_map_error(&game, map_error);
+	game.rays = malloc(WIDTH * sizeof(t_ray));
 	game.mlx = mlx_init();
 	game.win = mlx_new_window(game.mlx, WIDTH, HEIGHT, "cub3D");
 	load_textures(&game);
 	mlx_hook(game.win, BTN_X, NO_EVENT, close_game, &game);
-	mlx_hook(game.win, 02, 1L << 0, key_hook, &game);render_screen(&game);
+	mlx_hook(game.win, 02, 1L << 0, key_hook, &game);
+	render_screen(&game);
 	mlx_loop(game.mlx);
 	return (0);
 }

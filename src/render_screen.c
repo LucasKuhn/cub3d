@@ -18,10 +18,10 @@ void	draw_image_column(t_game *game, t_ray ray, int column)
 		int pixel = (y * game->textures.frame.line_size) + (column * 4);
 			// change the 'offset' to top offset the dist
 		game->textures.frame.pixels[pixel + 0] = game->ceiling[2];       // blue
-		game->textures.frame.pixels[pixel + 1] = game->ceiling[1];      
+		game->textures.frame.pixels[pixel + 1] = game->ceiling[1];
 			// green
 		game->textures.frame.pixels[pixel + 2] = game->ceiling[0];       // red
-		game->textures.frame.pixels[pixel + 3] = 0;                     
+		game->textures.frame.pixels[pixel + 3] = 0;
 			// alpha
 		y++;
 	}
@@ -39,7 +39,7 @@ void	draw_image_column(t_game *game, t_ray ray, int column)
 		int pixel = (y * game->textures.frame.line_size) + (column * 4);
 			// change the 'offset' to top offset the dist
 		if (pixel > HEIGHT * WIDTH * 4)
-			break ;		
+			break ;
 		current_texture_y = (int)floor(texture_y);
 		game->textures.frame.pixels[pixel
 			+ 0] = ray.texture.pixels[(current_texture_y * ray.texture.line_size
@@ -61,10 +61,10 @@ void	draw_image_column(t_game *game, t_ray ray, int column)
 		int pixel = (y * game->textures.frame.line_size) + (column * 4);
 			// change the 'offset' to top offset the dist
 		game->textures.frame.pixels[pixel + 0] = game->floor[2];         // blue
-		game->textures.frame.pixels[pixel + 1] = game->floor[1];        
+		game->textures.frame.pixels[pixel + 1] = game->floor[1];
 			// green
 		game->textures.frame.pixels[pixel + 2] = game->floor[0];         // red
-		game->textures.frame.pixels[pixel + 3] = 0;                     
+		game->textures.frame.pixels[pixel + 3] = 0;
 			// alpha
 		y++;
 	}
@@ -74,13 +74,12 @@ void	draw_image_column(t_game *game, t_ray ray, int column)
 void	render_screen(t_game *game)
 {
 	int		i;
-	t_ray	rays[WIDTH] = {0};
-	
-	cast_rays(game, rays);
+
+	cast_rays(game);
 	i = 0;
 	while (i < WIDTH)
 	{
-		draw_image_column(game, rays[i], i);
+		draw_image_column(game, game->rays[i], i);
 		i++;
 	}
 	mlx_put_image_to_window(game->mlx, game->win, game->textures.frame.ptr, 0,

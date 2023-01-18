@@ -6,7 +6,7 @@
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 13:38:03 by lucferna          #+#    #+#             */
-/*   Updated: 2023/01/18 13:45:19 by lucferna         ###   ########.fr       */
+/*   Updated: 2023/01/18 18:47:33 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	surrounded_by_walls(char **map)
 			{
 				if (i == 0 || i == last_line)
 					return (FALSE);
-				if (&line_checker == 0)
+				if (line_checker(map, i, j) == 0)
 					return (FALSE);
 			}
 			j++;
