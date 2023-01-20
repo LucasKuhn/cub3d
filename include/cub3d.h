@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/18 21:24:10 by lucferna         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:40:54 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ typedef struct s_ray
 {
 	double		size;
 	t_image		texture;
+	int			texture_offset_x;
+	double		column_height;
 	double		x;
 	double		y;
 	int			vertical_hit;
@@ -149,6 +151,7 @@ int				can_move_player(int keycode, t_game *game);
 
 // Main render screen function
 void			render_screen(t_game *game);
+void			draw_column(t_game *game, t_ray ray, int column);
 
 // Raycasting
 void			cast_rays(t_game *game);

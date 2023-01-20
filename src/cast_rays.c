@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cast_rays.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 19:22:27 by lucferna          #+#    #+#             */
-/*   Updated: 2023/01/18 20:24:48 by lucferna         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:23:39 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,21 @@ t_image	get_wall_texture(t_game *game, double direction, int vertical_hit)
 		return (game->textures.east);
 }
 
-static void	set_ray(t_game *game, int n_rays, int vertical_hit,
-				double direction)
+static void	set_ray(t_game *game, t_ray *ray, int vertical_hit, double dir)
 {
 	long double	size;
 	long double	fisheye_fix;
-	long double	player_ray_difference;
 
-	player_ray_difference = game->direction_in_radian - direction;
-	fisheye_fix = cos(player_ray_difference * 0.8);
-	size = sqrt(pow(game->rays[n_rays].x - game->player.x, 2)
-			+ pow(game->rays[n_rays].y - game->player.y, 2)) * fisheye_fix;
-	game->rays[n_rays].size = size;
-	game->rays[n_rays].texture = get_wall_texture(game, direction,
-			vertical_hit);
-	game->rays[n_rays].vertical_hit = vertical_hit;
+	fisheye_fix = cos((game->direction_in_radian - dir) * 0.8);
+	size = sqrt(pow(ray->x - game->player.x, 2) + pow(ray->y - game->player.y, 2)) * fisheye_fix;
+	ray->size = size;
+	ray->texture = get_wall_texture(game, dir, vertical_hit);
+	ray->vertical_hit = vertical_hit;
+	ray->column_height = (HEIGHT / ray->size) * 15;
+	if (vertical_hit)
+		ray->texture_offset_x = (int)((ray->y * ray->texture.size.x) / 10) % 256 * 4;
+	else
+		ray->texture_offset_x = (int)((ray->x * ray->texture.size.x) / 10) % 256 * 4;
 }
 
 void	cast_ray(t_game *game, int n_rays, double direction)
@@ -66,13 +66,13 @@ void	cast_ray(t_game *game, int n_rays, double direction)
 		ray->x += x_component;
 		if (game->map[(int)(ray->y / 10)][(int)(ray->x / 10)] == '1')
 		{
-			set_ray(game, n_rays, TRUE, direction);
+			set_ray(game, ray, TRUE, direction);
 			break ;
 		}
 		ray->y += y_component;
 		if (game->map[(int)(ray->y / 10)][(int)(ray->x / 10)] == '1')
 		{
-			set_ray(game, n_rays, FALSE, direction);
+			set_ray(game, ray, FALSE, direction);
 			break ;
 		}
 	}
