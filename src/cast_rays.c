@@ -42,8 +42,8 @@ void	cast_ray(t_game *game, int n_rays, double direction)
 
 void	cast_rays(t_game *game)
 {
-	int			n_rays;
-	double		direction;
+	int		n_rays;
+	double	direction;
 
 	n_rays = 0;
 	direction = game->direction_in_radian + (FOV / 2);

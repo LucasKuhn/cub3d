@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 14:17:16 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 14:40:01 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 # define MOVING_SPEED 5
 
 # define ONE_RAD 0.0174533
-# define FOV M_PI / 3
+# define FOV 1.0471975512
 
 # define DEG_TO_RAD(n) (n * (M_PI / 180.0))
 
