@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 14:42:58 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 14:44:30 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 # define HEIGHT 560
 
 # define TURNING_SPEED 10
-# define MOVING_SPEED 5
+# define MOVING_SPEED 4
 
 # define ONE_RAD 0.0174533
 # define FOV 1.0471975512
