@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   surrounded_by_walls.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 13:38:03 by lucferna          #+#    #+#             */
-/*   Updated: 2023/01/18 18:47:33 by lucferna         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:58:42 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	remove_player(char **map)
 	}
 }
 
-static int	line_checker(char **map, int i, int j)
+static int	line_checker(char **map, size_t i, int j)
 {
 	if (map[i][j + 1] != '1' && map[i][j + 1] != '0')
 		return (FALSE);

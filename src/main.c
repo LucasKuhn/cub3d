@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 21:07:22 by lucferna          #+#    #+#             */
-/*   Updated: 2023/01/18 21:18:23 by lucferna         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:53:36 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@ int	cub3d(char *map_name)
 	t_game	game;
 	char	*map_error;
 
-	game.map = load_map(map_name);
-	game.map_original = game.map;
-	game.player = find_player(game.map);
-	set_player_directions(&game);
+	load_map(&game, map_name);
+	set_player(&game);
 	map_error = get_map_error(game.map);
 	if (map_error)
 		exit_map_error(&game, map_error);

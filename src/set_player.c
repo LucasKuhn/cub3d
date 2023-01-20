@@ -6,25 +6,20 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 16:06:09 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/16 16:30:19 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:52:36 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/cub3d.h"
 
-int	is_player(char c)
-{
-	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
-}
-
-void	set_player_directions(t_game *game)
+static void	set_player_directions(t_game *game)
 {
 	char	**map;
 	int		x;
 	int		y;
 
 	map = game->map;
-	while (*map[0] != ' ' && *map[0] != '1')
+	while (*map && *map[0] != ' ' && *map[0] != '1')
 		map++;
 	x = game->player.x / 10;
 	y = game->player.y / 10;
@@ -39,13 +34,14 @@ void	set_player_directions(t_game *game)
 	game->direction_in_radian = game->player_direction * (M_PI / 180.0);
 }
 
-t_vector	find_player(char **map)
+void	set_player(t_game *game)
 {
-	t_vector	player;
 	int			i;
 	int			j;
+	char		**map;
 
-	while (*map[0] != ' ' && *map[0] != '1')
+	map = game->map;
+	while (*map && *map[0] != ' ' && *map[0] != '1')
 		map++;
 	i = 0;
 	while (map[i])
@@ -55,13 +51,14 @@ t_vector	find_player(char **map)
 		{
 			if (ft_strchr("NSEW", map[i][j]))
 			{
-				player.x = (j * 10);
-				player.y = (i * 10);
-				return (player);
+				game->player.x = (j * 10);
+				game->player.y = (i * 10);
+				set_player_directions(game);
+				return ;
 			}
 			j++;
 		}
 		i++;
 	}
-	return (player);
+	exit_map_error(game, "No player found in map");
 }

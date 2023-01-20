@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:24:50 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 14:42:20 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:55:25 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void	move_player(int keycode, t_game *game)
 {
 	double	x_component;
 	double	y_component;
-	int		new_player_x;
-	int		new_player_y;
 	double	rad;
 
 	rad = get_rad(game, keycode);
