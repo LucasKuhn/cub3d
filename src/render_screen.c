@@ -79,7 +79,7 @@ void	render_screen(t_game *game)
 	i = 0;
 	while (i < WIDTH)
 	{
-		draw_image_column(game, game->rays[i], i);
+		draw_column(game, game->rays[i], i);
 		i++;
 	}
 	mlx_put_image_to_window(game->mlx, game->win, game->textures.frame.ptr, 0,
