@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 16:48:06 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:52:44 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ typedef struct s_game
 void			draw_minimap(t_game *game);
 void			move_player(int keycode, t_game *game);
 void			draw_3d_view(t_game *game);
-void			**load_map(t_game *game, char *map_name);
+void			load_map(t_game *game, char *map_name);
 void			set_player(t_game *game);
 int				valid_extension(char *map_name);
 

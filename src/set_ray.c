@@ -6,27 +6,25 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:17:52 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 16:28:47 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 17:03:39 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/cub3d.h"
 
-static t_image	get_wall_texture(t_game *game, double direction,
-		int vertical_hit)
+static t_image	get_wall_texture(t_game *game, double dir, int vertical_hit)
 {
-	if (direction > 0 && direction < M_PI_2 && vertical_hit)
+	if (dir > 0 && dir < M_PI_2 && vertical_hit)
 		return (game->textures.south);
-	if (direction > 0 && direction < M_PI_2 || (direction > 2 * M_PI
-			&& !vertical_hit))
+	if ((dir > 0 && dir < M_PI_2) || (dir > 2 * M_PI && !vertical_hit))
 		return (game->textures.west);
-	if (direction > M_PI_2 && direction < M_PI && vertical_hit)
+	if (dir > M_PI_2 && dir < M_PI && vertical_hit)
 		return (game->textures.north);
-	if (direction > M_PI_2 && direction < M_PI)
+	if (dir > M_PI_2 && dir < M_PI)
 		return (game->textures.west);
-	if (direction > M_PI && direction < 3 * M_PI / 2 && vertical_hit)
+	if (dir > M_PI && dir < 3 * M_PI / 2 && vertical_hit)
 		return (game->textures.north);
-	if (direction > M_PI && direction < 3 * M_PI / 2)
+	if (dir > M_PI && dir < 3 * M_PI / 2)
 		return (game->textures.east);
 	if (vertical_hit)
 		return (game->textures.south);

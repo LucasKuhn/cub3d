@@ -1,6 +1,6 @@
 NAME		=	cub3D
 MLXFLAGS	=	-lmlx -Ilmlx -lXext -lX11
-# CFLAGS		=	-g -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror # -g -fsanitize=address
 SRC_DIR		=	src
 SRCS		=	$(addprefix $(SRC_DIR)/, cast_rays.c draw_column.c \
 				draw_minimap.c draw_utils.c exit_utils.c find_identifiers.c \

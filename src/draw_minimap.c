@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:23:23 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 14:24:37 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:53:56 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	draw_cube(t_game *game, int x, int y)
 
 void	draw_minimap(t_game *game)
 {
-	char	*map_line;
 	int		x;
 	int		y;
 

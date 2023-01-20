@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 13:57:33 by lucferna          #+#    #+#             */
-/*   Updated: 2023/01/20 14:28:42 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:54:15 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void	draw_direction(t_game *game)
 {
-	int		x;
-	int		y;
 	int		i;
 	double	d_x;
 	double	d_y;

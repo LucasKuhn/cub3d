@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:43:12 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 16:48:21 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:52:21 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	get_file_size(char *map_name)
 	return (size);
 }
 
-void	**load_map(t_game *game, char *map_name)
+void	load_map(t_game *game, char *map_name)
 {
 	char	*file;
 	char	**map;
@@ -45,5 +45,4 @@ void	**load_map(t_game *game, char *map_name)
 	free(file);
 	game->map = map;
 	game->map_original = map;
-	return ;
 }

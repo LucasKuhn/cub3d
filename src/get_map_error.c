@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:34:45 by lucferna          #+#    #+#             */
-/*   Updated: 2023/01/20 14:57:46 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:55:03 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ int	invalid_color(char *map)
 	char	**colors;
 	char	*copy;
 	int		info_size;
-	int		i;
 
-	i = 0;
 	info_size = 0;
 	map++;
 	while (*map == ' ')
@@ -113,9 +111,7 @@ int	identifier_is_valid(char *map)
 
 char	*get_map_error(char **map)
 {
-	char		*identifier;
 	static int	identifiers_count;
-	char		**identifier_found;
 
 	if (!has_all_textures(map) || !has_all_colors(map))
 		return ("Map is missing identifiers");
