@@ -6,49 +6,11 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 19:22:27 by lucferna          #+#    #+#             */
-/*   Updated: 2023/01/20 11:23:39 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 14:18:30 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/cub3d.h"
-
-t_image	get_wall_texture(t_game *game, double direction, int vertical_hit)
-{
-	if (direction > 0 && direction < M_PI_2 && vertical_hit)
-		return (game->textures.south);
-	if (direction > 0 && direction < M_PI_2 || (direction > 2 * M_PI
-			&& !vertical_hit))
-		return (game->textures.west);
-	if (direction > M_PI_2 && direction < M_PI && vertical_hit)
-		return (game->textures.north);
-	if (direction > M_PI_2 && direction < M_PI)
-		return (game->textures.west);
-	if (direction > M_PI && direction < 3 * M_PI / 2 && vertical_hit)
-		return (game->textures.north);
-	if (direction > M_PI && direction < 3 * M_PI / 2)
-		return (game->textures.east);
-	if (vertical_hit)
-		return (game->textures.south);
-	else
-		return (game->textures.east);
-}
-
-static void	set_ray(t_game *game, t_ray *ray, int vertical_hit, double dir)
-{
-	long double	size;
-	long double	fisheye_fix;
-
-	fisheye_fix = cos((game->direction_in_radian - dir) * 0.8);
-	size = sqrt(pow(ray->x - game->player.x, 2) + pow(ray->y - game->player.y, 2)) * fisheye_fix;
-	ray->size = size;
-	ray->texture = get_wall_texture(game, dir, vertical_hit);
-	ray->vertical_hit = vertical_hit;
-	ray->column_height = (HEIGHT / ray->size) * 15;
-	if (vertical_hit)
-		ray->texture_offset_x = (int)((ray->y * ray->texture.size.x) / 10) % 256 * 4;
-	else
-		ray->texture_offset_x = (int)((ray->x * ray->texture.size.x) / 10) % 256 * 4;
-}
 
 void	cast_ray(t_game *game, int n_rays, double direction)
 {

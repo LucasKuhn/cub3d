@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 11:40:54 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 14:17:16 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,13 @@ typedef struct s_textures
 
 typedef struct s_ray
 {
+	double		x;
+	double		y;
 	double		size;
 	t_image		texture;
 	int			texture_offset_x;
+	double		texture_offset_y;
 	double		column_height;
-	double		x;
-	double		y;
 	int			vertical_hit;
 }				t_ray;
 
@@ -155,6 +156,7 @@ void			draw_column(t_game *game, t_ray ray, int column);
 
 // Raycasting
 void			cast_rays(t_game *game);
+void			set_ray(t_game *game, t_ray *ray, int vertical_hit, double dir);
 
 // Draw utils
 void			draw_player(t_game *game);
