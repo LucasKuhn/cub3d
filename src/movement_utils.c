@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:24:50 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 14:27:30 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 14:42:20 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ void	change_direction(int keycode, t_game *game)
 		game->player_direction += TURNING_SPEED;
 		if (game->player_direction > 360)
 			game->player_direction = 0;
-		game->direction_in_radian = DEG_TO_RAD(game->player_direction);
+		game->direction_in_radian = game->player_direction * (M_PI / 180.0);
 	}
 	if (keycode == RIGHT_ARROW)
 	{
 		game->player_direction -= TURNING_SPEED;
 		if (game->player_direction < 0)
 			game->player_direction = 360;
-		game->direction_in_radian = DEG_TO_RAD(game->player_direction);
+		game->direction_in_radian = game->player_direction * (M_PI / 180.0);
 	}
 }
 
