@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 14:44:30 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:48:06 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@
 # include <mlx.h>         // MiniLibX
 # include <stdio.h>       // printf
 # include <stdlib.h>
+
+// configurables
+# define WIDTH 1080
+# define HEIGHT 560
+# define WALL_HEIGHT 15
+# define TURNING_SPEED 10
+# define MOVING_SPEED 4
+# define FOV 1.0471975512
 
 # define RED 0xFF0000
 # define GREEN 0x00FF00
@@ -40,14 +48,7 @@
 # define TRUE 1
 # define FALSE 0
 
-# define WIDTH 1080
-# define HEIGHT 560
-
-# define TURNING_SPEED 10
-# define MOVING_SPEED 4
-
 # define ONE_RAD 0.0174533
-# define FOV 1.0471975512
 
 typedef enum e_identifiers
 {
@@ -117,18 +118,17 @@ typedef struct s_game
 void			draw_minimap(t_game *game);
 void			move_player(int keycode, t_game *game);
 void			draw_3d_view(t_game *game);
-t_vector		find_player(char **map);
-void			set_player_directions(t_game *game);
-char			**load_map(char *map_name);
+void			**load_map(t_game *game, char *map_name);
+void			set_player(t_game *game);
 int				valid_extension(char *map_name);
 
 // Error checking
 char			*get_map_error(char **map);
 int				surrounded_by_walls(char **map);
 int				has_all_textures(char **map);
+int				has_all_colors(char **map);
 int				has_starting_position(char **map);
 int				has_invalid_characters(char **map);
-int				has_all_colors(char **map);
 char			*get_identifier(char *line);
 void			exit_map_error(t_game *game, char *map_error);
 void			exit_error(char *str);

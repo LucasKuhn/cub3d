@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 21:26:34 by lucferna          #+#    #+#             */
-/*   Updated: 2023/01/20 14:10:36 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:42:14 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,16 @@ void	draw_column(t_game *game, t_ray ray, int column)
 	double	offset;
 
 	offset = ceil((HEIGHT - ray.column_height) / 2);
-	y = 1;
+	y = 0;
 	while (y < offset)
 	{
 		draw_ceiling(game, get_pixel(game, y, column));
 		y++;
 	}
 	texture_y = ray.texture_offset_y;
-	while (y < HEIGHT - offset)
+	while (y < HEIGHT && y < (HEIGHT - offset))
 	{
-		draw_wall(game, ray, get_pixel(game, y, column), floor(texture_y));
+		draw_wall(game, ray, get_pixel(game, y, column), texture_y);
 		texture_y += (ray.texture.size.y / ray.column_height);
 		y++;
 	}

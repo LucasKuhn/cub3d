@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_identifiers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:38:55 by lucferna          #+#    #+#             */
-/*   Updated: 2023/01/18 13:33:46 by lucferna         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:11:00 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ int	has_all_colors(char **map)
 		if (*map[0] == '1' || *map[0] == ' ')
 			break ;
 		identifier = get_identifier(*map);
-		if (identifier == NULL)
-			break ;
 		if (ft_strncmp(identifier, "F", 2) == 0)
 			f = TRUE;
 		if (ft_strncmp(identifier, "C", 2) == 0)
@@ -67,6 +65,32 @@ int	has_all_colors(char **map)
 		map++;
 	}
 	return (f && c);
+}
+
+int	has_all_textures(char **map)
+{
+	static int	no;
+	static int	so;
+	static int	we;
+	static int	ea;
+	char		*identifier;
+
+	while (*map)
+	{
+		if (*map[0] == '1' || *map[0] == ' ')
+			break ;
+		identifier = get_identifier(*map);
+		if (ft_strncmp(identifier, "NO", 2) == 0)
+			no = TRUE;
+		if (ft_strncmp(identifier, "SO", 2) == 0)
+			so = TRUE;
+		if (ft_strncmp(identifier, "WE", 2) == 0)
+			we = TRUE;
+		if (ft_strncmp(identifier, "EA", 2) == 0)
+			ea = TRUE;
+		map++;
+	}
+	return (no && so && we && ea);
 }
 
 int	has_starting_position(char **map)
@@ -85,32 +109,4 @@ int	has_starting_position(char **map)
 		map++;
 	}
 	return (FALSE);
-}
-
-int	has_all_textures(char **map)
-{
-	static int	no;
-	static int	so;
-	static int	we;
-	static int	ea;
-	char		*identifier;
-
-	while (*map)
-	{
-		if (*map[0] == '1' || *map[0] == ' ')
-			break ;
-		identifier = get_identifier(*map);
-		if (identifier == NULL)
-			break ;
-		if (ft_strncmp(identifier, "NO", 2) == 0)
-			no = TRUE;
-		if (ft_strncmp(identifier, "SO", 2) == 0)
-			so = TRUE;
-		if (ft_strncmp(identifier, "WE", 2) == 0)
-			we = TRUE;
-		if (ft_strncmp(identifier, "EA", 2) == 0)
-			ea = TRUE;
-		map++;
-	}
-	return (no && so && we && ea);
 }

@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:17:52 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 14:17:52 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:28:47 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	set_ray(t_game *game, t_ray *ray, int vertical_hit, double dir)
 {
 	ray->vertical_hit = vertical_hit;
 	ray->size = get_size(game, ray, dir);
-	ray->column_height = (HEIGHT / ray->size) * 15;
+	ray->column_height = (HEIGHT / ray->size) * WALL_HEIGHT;
 	ray->texture = get_wall_texture(game, dir, vertical_hit);
 	ray->texture_offset_x = get_texture_offset_x(*ray);
 	ray->texture_offset_y = get_texture_offset_y(*ray);

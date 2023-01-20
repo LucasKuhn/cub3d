@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:43:12 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/18 21:16:41 by lucferna         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:48:21 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ static int	get_file_size(char *map_name)
 	fd = open(map_name, O_RDONLY);
 	while (read(fd, buffer, 1))
 		size++;
-	return (size);
 	close(fd);
+	return (size);
 }
 
-char	**load_map(char *map_name)
+void	**load_map(t_game *game, char *map_name)
 {
 	char	*file;
 	char	**map;
@@ -36,12 +36,14 @@ char	**load_map(char *map_name)
 	file_size = get_file_size(map_name);
 	fd = open(map_name, O_RDONLY);
 	if (fd <= 0)
-		return (NULL);
+		exit_error("Error opening map file");
 	file = malloc(sizeof(char) * (file_size + 1));
 	read(fd, file, file_size);
 	file[file_size] = '\0';
 	close(fd);
 	map = ft_split(file, '\n');
 	free(file);
-	return (map);
+	game->map = map;
+	game->map_original = map;
+	return ;
 }
