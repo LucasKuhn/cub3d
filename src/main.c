@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 21:07:22 by lucferna          #+#    #+#             */
-/*   Updated: 2023/01/20 15:53:36 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/23 20:58:09 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	cub3d(char *map_name)
 	load_textures(&game);
 	mlx_hook(game.win, BTN_X, NO_EVENT, close_game, &game);
 	mlx_hook(game.win, 02, 1L << 0, key_hook, &game);
+	mlx_expose_hook(game.win, render_screen, &game);
 	render_screen(&game);
 	mlx_loop(game.mlx);
 	return (0);
@@ -37,7 +38,9 @@ int	main(int argc, char **argv)
 {
 	if (argc < 2)
 		exit_error("Please provide a map");
-	if (!valid_extension(argv[1]))
-		exit_error("Invalid map extension");
+	if (argc > 2)
+		exit_error("Too many arguments");
+	if (!valid_map_file(argv[1]))
+		exit_error("Invalid map file");
 	return (cub3d(argv[1]));
 }

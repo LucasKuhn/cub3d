@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   render_screen.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 14:20:36 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 14:22:12 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/23 20:56:26 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/cub3d.h"
 
-void	render_screen(t_game *game)
+int	render_screen(t_game *game)
 {
 	int	i;
 
@@ -29,4 +29,5 @@ void	render_screen(t_game *game)
 		game->player.x, game->player.y);
 	draw_minimap(game);
 	draw_direction(game);
+	return (TRUE);
 }
