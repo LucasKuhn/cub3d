@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_map_error.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:34:45 by lucferna          #+#    #+#             */
-/*   Updated: 2023/01/20 16:55:03 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/23 18:03:15 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ int	check_colors(char **colors)
 	while (colors[i] != NULL)
 		i++;
 	if (i > 3)
-		return (printf("Too many colors\n"));
-	if (i < 2)
-		return (printf("Not enough colors\n"));
+		return (printf("Error\nToo many colors\n"));
+	if (i <= 2)
+		return (printf("Error\nNot enough colors\n"));
 	i = 0;
 	while (colors[i] != NULL)
 	{
 		num = ft_atoi(colors[i]);
 		if (num < 0 || num > 255)
-			return (printf("Invalid color '%d'\n", num));
+			return (printf("Error\nInvalid color '%d'\n", num));
 		i++;
 	}
 	return (0);
@@ -81,7 +81,7 @@ int	invalid_texture(char *map)
 	fd = open(copy, O_RDONLY);
 	if (fd < 0)
 	{
-		printf("Error on texture '%s'\n", copy);
+		printf("Error\nError on texture '%s'\n", copy);
 		close(fd);
 		free(copy);
 		return (TRUE);
