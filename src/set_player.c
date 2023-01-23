@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_player.c                                      :+:      :+:    :+:   */
+/*   set_player.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 16:06:09 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 15:52:36 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/23 17:36:11 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	set_player(t_game *game)
 		{
 			if (ft_strchr("NSEW", map[i][j]))
 			{
-				game->player.x = (j * 10);
-				game->player.y = (i * 10);
+				game->player.x = (j * 10 + 3);
+				game->player.y = (i * 10 + 3);
 				set_player_directions(game);
 				return ;
 			}
