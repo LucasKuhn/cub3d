@@ -1,17 +1,47 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_map_error.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/18 12:34:45 by lucferna          #+#    #+#             */
+/*   Updated: 2023/01/20 16:55:03 by lalex-ku         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./include/cub3d.h"
+
+int	check_colors(char **colors)
+{
+	int	i;
+	int	num;
+
+	i = 0;
+	while (colors[i] != NULL)
+		i++;
+	if (i > 3)
+		return (printf("Too many colors\n"));
+	if (i < 2)
+		return (printf("Not enough colors\n"));
+	i = 0;
+	while (colors[i] != NULL)
+	{
+		num = ft_atoi(colors[i]);
+		if (num < 0 || num > 255)
+			return (printf("Invalid color '%d'\n", num));
+		i++;
+	}
+	return (0);
+}
 
 int	invalid_color(char *map)
 {
 	char	**colors;
 	char	*copy;
 	int		info_size;
-	int		i;
-	int		num;
 
 	info_size = 0;
-	i = 0;
-	if (*map != 'F' && *map != 'C')
-		return (TRUE);
 	map++;
 	while (*map == ' ')
 		map++;
@@ -19,33 +49,17 @@ int	invalid_color(char *map)
 		return (TRUE);
 	while (map[info_size] && map[info_size] != '\n')
 		info_size++;
-	if (info_size < 5)
-		return (TRUE);
 	copy = ft_strndup(map, info_size + 1);
 	colors = ft_split(copy, ',');
-	while (colors[i] != NULL)
+	if (check_colors(colors) != 0)
 	{
-		if (i > 2)
-		{
-			printf("Too many colors\n");
-			return (TRUE);
-		}
-		num = ft_atoi(colors[i]);
-		if (num < 0 || num > 255)
-		{
-			printf("Invalid color '%d'\n", num);
-			return (TRUE);
-		}
-		i++;
+		free_matrix(colors);
+		free(copy);
+		return (TRUE);
 	}
 	free_matrix(colors);
 	free(copy);
 	return (FALSE);
-}
-
-int	is_map_start(char *map_line)
-{
-	return (map_line[0] == '1' || map_line[0] == ' ');
 }
 
 int	invalid_texture(char *map)
@@ -77,109 +91,10 @@ int	invalid_texture(char *map)
 	return (FALSE);
 }
 
-char	*get_identifier(char *line)
+int	identifier_is_valid(char *map)
 {
-	if (ft_strncmp(line, "NO ", 3) == 0)
-		return ("NO");
-	if (ft_strncmp(line, "SO ", 3) == 0)
-		return ("SO");
-	if (ft_strncmp(line, "WE ", 3) == 0)
-		return ("WE");
-	if (ft_strncmp(line, "EA ", 3) == 0)
-		return ("EA");
-	if (ft_strncmp(line, "F ", 2) == 0)
-		return ("F");
-	if (ft_strncmp(line, "C ", 2) == 0)
-		return ("C");
-	return (NULL);
-}
-
-int has_all_colors(char **map)
-{
-	static int	F;
-	static int	C;
-	char		*identifier;
-
-	while (*map)
-	{
-		if (*map[0] == '1' || *map[0] == ' ')
-			break ;
-		identifier = get_identifier(*map);
-		if (ft_strncmp(identifier, "F", 2) == 0)
-			F = TRUE;
-		if (ft_strncmp(identifier, "C", 2) == 0)
-			C = TRUE;
-		map++;
-	}
-	return (F && C);
-}
-
-int	has_all_textures(char **map)
-{
-	static int	NO;
-	static int	SO;
-	static int	WE;
-	static int	EA;
-	char		*identifier;
-
-	while (*map)
-	{
-		if (*map[0] == '1' || *map[0] == ' ')
-			break ;
-		identifier = get_identifier(*map);
-		if (ft_strncmp(identifier, "NO", 2) == 0)
-			NO = TRUE;
-		if (ft_strncmp(identifier, "SO", 2) == 0)
-			SO = TRUE;
-		if (ft_strncmp(identifier, "WE", 2) == 0)
-			WE = TRUE;
-		if (ft_strncmp(identifier, "EA", 2) == 0)
-			EA = TRUE;
-		map++;
-	}
-	return (NO && SO && WE && EA && F && C);
-}
-
-int	has_starting_position(char **map)
-{
-	int	i;
-
-	while (*map)
-	{
-		i = 0;
-		while ((*map)[i])
-		{
-			if (ft_strchr("NSEW", (*map)[i]) != NULL)
-				return (TRUE);
-			i++;
-		}
-		map++;
-	}
-	return (FALSE);
-}
-
-int	has_invalid_characters(char **map)
-{
-	int	i;
-
-	while (*map)
-	{
-		i = 0;
-		while ((*map)[i])
-		{
-			if (ft_strchr("1NWES0 ", (*map)[i]) == NULL)
-				return (TRUE);
-			i++;
-		}
-		map++;
-	}
-	return (FALSE);
-}
-
-int identifier_is_valid(char *map)
-{
-	int identifier_size;
-	char *identifier;
+	int		identifier_size;
+	char	*identifier;
 
 	identifier = get_identifier(map);
 	if (!identifier)
@@ -196,14 +111,12 @@ int identifier_is_valid(char *map)
 
 char	*get_map_error(char **map)
 {
-	char		*identifier;
 	static int	identifiers_count;
-	char		**identifier_found;
 
 	if (!has_all_textures(map) || !has_all_colors(map))
 		return ("Map is missing identifiers");
 	while (*map && !is_map_start(*map))
-	{		
+	{
 		if (!identifier_is_valid(*map))
 			return ("Invalid identifier");
 		identifiers_count++;

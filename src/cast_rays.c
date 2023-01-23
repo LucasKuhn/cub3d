@@ -1,96 +1,56 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cast_rays.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/18 19:22:27 by lucferna          #+#    #+#             */
+/*   Updated: 2023/01/20 14:18:30 by lalex-ku         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./include/cub3d.h"
 
-t_image	get_wall_texture(t_game *game, double direction, int vertical_hit)
+void	cast_ray(t_game *game, int n_rays, double direction)
 {
-	if (direction > 0 && direction < M_PI_2
-		&& vertical_hit)                            // first quadrant
-		return (game->textures.south);                                                 
-		// south
-	if (direction > 0 && direction < M_PI_2 || (direction > 2 * M_PI
-			&& !vertical_hit)) // first quadrant
-		return (game->textures.west);                                                  
-		// west
-	if (direction > M_PI_2 && direction < M_PI
-		&& vertical_hit)                         // second quadrant
-		return (game->textures.north);                                                 
-		// north
-	if (direction > M_PI_2
-		&& direction < M_PI)                                        
-	// second quadrant
-		return (game->textures.west);                                                  
-		// west
-	if (direction > M_PI && direction < 3 * M_PI / 2
-		&& vertical_hit)                   // third quadrant
-		return (game->textures.north);                                                 
-		// north
-	if (direction > M_PI && direction < 3 * M_PI
-		/ 2)                                   // third quadrant
-		return (game->textures.east);                                                  
-		// east
-	if (vertical_hit)                                                                  
-	// fourth quadrant
-		return (game->textures.south);                                                 
-		// south
-	else                                                                               
-		// fourth quadrant
-		return (game->textures.east);                                                  
-		// east
+	t_ray	*ray;
+	double	x_component;
+	double	y_component;
+
+	x_component = cos(direction) / 30;
+	y_component = -sin(direction) / 30;
+	ray = &(game->rays[n_rays]);
+	ray->x = game->player.x;
+	ray->y = game->player.y;
+	while (ray->x > 0 && ray->x < WIDTH && ray->y > 0 && ray->y < HEIGHT)
+	{
+		ray->x += x_component;
+		if (game->map[(int)(ray->y / 10)][(int)(ray->x / 10)] == '1')
+		{
+			set_ray(game, ray, TRUE, direction);
+			break ;
+		}
+		ray->y += y_component;
+		if (game->map[(int)(ray->y / 10)][(int)(ray->x / 10)] == '1')
+		{
+			set_ray(game, ray, FALSE, direction);
+			break ;
+		}
+	}
 }
 
-void	cast_rays(t_game *game, t_ray rays[])
+void	cast_rays(t_game *game)
 {
-	int			hit;
-	int			n_rays;
-	double		x_component;
-	double		y_component;
-	double		x;
-	double		y;
-	double		fov;
-	double		direction;
-	double		step_size;
-	int			vertical_hit;
-	long double	player_ray_difference;
-	long double	size;
+	int		n_rays;
+	double	direction;
 
-	hit = 0;
 	n_rays = 0;
-	fov = (M_PI / 3);
-	direction = game->direction_in_radian + (fov / 2);
-	step_size = fov / WIDTH;
+	direction = game->direction_in_radian + (FOV / 2);
 	while (n_rays < WIDTH)
 	{
-		x_component = cos(direction) / 30; 
-			// Increasing this value will make the ray step smaller
-		y_component = -sin(direction) / 30;
-			// Increasing this value will make the ray step smaller
-		x = game->player.x;
-		y = game->player.y;
-		hit = 0;
-		vertical_hit = FALSE;
-		while (!hit && x > 0 && x < WIDTH && y > 0 && y < HEIGHT)
-		{
-			x += x_component;
-			if (game->map[(int)(y / 10)][(int)(x / 10)] == '1')
-				vertical_hit = TRUE;
-			y += y_component;
-			/* 	mlx_pixel_put(game->mlx, game->win, x, y, 0x00FFBD2D); */
-			if (game->map[(int)(y / 10)][(int)(x / 10)] == '1')
-			{
-				hit = 1;
-				player_ray_difference = game->direction_in_radian - direction;
-				long double fisheye_fix = cos(player_ray_difference * 0.8);
-					// 0.8 keeps a small amount of fisheye, avoiding distortion on the sides
-				size = sqrt(pow(x - game->player.x, 2) + pow(y - game->player.y,
-							2)) * fisheye_fix;
-				rays[n_rays].size = size;
-				rays[n_rays].texture = get_wall_texture(game, direction,
-						vertical_hit);
-				rays[n_rays].vertical_hit = vertical_hit;
-				rays[n_rays].x = x;
-				rays[n_rays].y = y;
-			}
-		}
+		cast_ray(game, n_rays, direction);
 		n_rays++;
-		direction -= step_size;
+		direction -= (FOV / WIDTH);
 	}
 }

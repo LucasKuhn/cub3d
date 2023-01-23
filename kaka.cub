@@ -3,8 +3,8 @@ SO ./images/cement.xpm
 WE ./images/marble.xpm
 EA ./images/circle-red.xpm
 
-F 0,222,174
-C 232,200,93
+F 224,211,197
+C 96,130,182
 
         1111111111111111111111111
         1000000000000000000000001

@@ -1,45 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   keycode_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/18 21:06:42 by lucferna          #+#    #+#             */
-/*   Updated: 2023/01/18 21:15:49 by lucferna         ###   ########.fr       */
+/*   Created: 2023/01/18 21:06:53 by lucferna          #+#    #+#             */
+/*   Updated: 2023/01/18 21:14:30 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/cub3d.h"
 
-char	*ft_strndup(char *str, int n)
+int	is_movement(int keycode)
 {
-	char	*ptr;
-
-	ptr = ft_calloc(n + 1, sizeof(char));
-	ft_strlcpy(ptr, str, n);
-	return (ptr);
+	return (keycode == W_KEY || keycode == S_KEY || keycode == A_KEY
+		|| keycode == D_KEY);
 }
 
-void	free_matrix(char **ptr)
+int	is_direction(int keycode)
 {
-	int	i;
-
-	i = 0;
-	while (ptr[i] != NULL)
-	{
-		free(ptr[i]);
-		i++;
-	}
-	free(ptr);
+	return (keycode == LEFT_ARROW || keycode == RIGHT_ARROW);
 }
 
-size_t	ft_arrlen(char **arr)
+int	is_map_start(char *map_line)
 {
-	size_t	i;
-
-	i = 0;
-	while (arr[i])
-		i++;
-	return (i);
+	return (map_line[0] == '1' || map_line[0] == ' ');
 }

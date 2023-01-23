@@ -1,9 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/18 13:57:33 by lucferna          #+#    #+#             */
+/*   Updated: 2023/01/20 16:54:15 by lalex-ku         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./include/cub3d.h"
 
 void	draw_direction(t_game *game)
 {
-	int		x;
-	int		y;
 	int		i;
 	double	d_x;
 	double	d_y;
@@ -13,15 +23,15 @@ void	draw_direction(t_game *game)
 	d_y = 0;
 	while (i < 10)
 	{
-		d_x += cos(game->direction_in_radian + M_PI);
-		d_y += sin(game->direction_in_radian + M_PI);
+		d_x += cos(game->direction_in_radian);
+		d_y += sin(game->direction_in_radian);
 		mlx_pixel_put(game->mlx, game->win, game->player.x + d_x, game->player.y
-				- d_y, 0x00FFFFFF);
+			- d_y, 0x00FFFFFF);
 		i++;
 	}
 }
 
-static void	set_colors(t_game *game, char *line)
+void	set_colors(t_game *game, char *line)
 {
 	int		*temp;
 	char	**colors;
@@ -67,23 +77,12 @@ t_image	new_image(t_game *game, int width, int height)
 	return (img);
 }
 
-void	load_textures(t_game *game)
+t_image	new_xpm(t_game *game, char *path)
 {
-	int i;
+	t_image	img;
 
-	i = 0;
-	while (game->map[i][0] != ' ' && game->map[i][0] != '1')
-	{
-		if (game->map[i][0] == 'C' || game->map[i][0] == 'F')
-			set_colors(game, game->map[i]);
-		if (game->map[i][0] == 'N' || game->map[i][0] == 'S'
-			|| game->map[i][0] == 'W' || game->map[i][0] == 'E')
-			set_texture(game, game->map[i]);
-		i++;
-	}
-	while (*(game->map)[0] != ' ' && *(game->map)[0] != '1')
-		game->map++;
-	game->textures.frame = new_image(game, WIDTH, HEIGHT);
-	game->textures.cube = new_xpm(game, "./images/gray10.xpm");
-	game->textures.player = new_xpm(game, "./images/yellow3x3.xpm");
+	img.ptr = mlx_xpm_file_to_image(game->mlx, path, &img.size.x, &img.size.y);
+	img.pixels = mlx_get_data_addr(img.ptr, &img.bits, &img.line_size,
+			&img.endian);
+	return (img);
 }
