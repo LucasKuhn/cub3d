@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:43:12 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 16:52:21 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/23 21:25:00 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,30 @@ static int	get_file_size(char *map_name)
 	return (size);
 }
 
+static int	has_line_break_in_map_area(char *file)
+{
+	int	i;
+
+	i = 0;
+	while (file[i])
+	{
+		while(file[i] != '\n' && file[i])
+			i++;
+		if ((file[i + 1] == '1' || file[i + 1] == ' ') && file[i])
+			break ;
+		i++;
+	}
+	while (file[i])
+	{
+		while(file[i] != '\n' && file[i])
+			i++;
+		if (file[i + 1] == '\n' && file[i])
+			return (TRUE);
+		i++;
+	}
+	return (FALSE);
+}
+
 void	load_map(t_game *game, char *map_name)
 {
 	char	*file;
@@ -41,6 +65,11 @@ void	load_map(t_game *game, char *map_name)
 	read(fd, file, file_size);
 	file[file_size] = '\0';
 	close(fd);
+	if (has_line_break_in_map_area(file))
+	{
+		free(file);
+		exit_error("Map contain empty line breaks");
+	}
 	map = ft_split(file, '\n');
 	free(file);
 	game->map = map;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
+/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 17:07:19 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/20 16:52:44 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/23 20:57:59 by lucferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void			move_player(int keycode, t_game *game);
 void			draw_3d_view(t_game *game);
 void			load_map(t_game *game, char *map_name);
 void			set_player(t_game *game);
-int				valid_extension(char *map_name);
+int				valid_map_file(char *map_name);
 
 // Error checking
 char			*get_map_error(char **map);
@@ -149,7 +149,7 @@ void			move_player(int keycode, t_game *game);
 int				can_move_player(int keycode, t_game *game);
 
 // Main render screen function
-void			render_screen(t_game *game);
+int				render_screen(t_game *game);
 void			draw_column(t_game *game, t_ray ray, int column);
 
 // Raycasting
