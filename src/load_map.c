@@ -35,7 +35,7 @@ static int	has_line_break_in_map_area(char *file)
 	{
 		while (file[i] != '\n' && file[i])
 			i++;
-		if (file[i + 1] && (file[i + 1] == '1' || file[i + 1] == ' '))
+		if (file[i] && file[i + 1] && (file[i + 1] == '1' || file[i + 1] == ' '))
 			break ;
 		i++;
 	}
@@ -43,7 +43,7 @@ static int	has_line_break_in_map_area(char *file)
 	{
 		while (file[i] && file[i] != '\n')
 			i++;
-		if (file[i + 1] && file[i + 1] == '\n')
+		if (file[i] && file[i + 1] && file[i + 1] == '\n')
 			return (TRUE);
 		i++;
 	}
