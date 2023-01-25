@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucferna <lucferna@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:43:12 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/23 21:25:00 by lucferna         ###   ########.fr       */
+/*   Updated: 2023/01/25 14:55:44 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,19 @@ static int	has_line_break_in_map_area(char *file)
 	int	i;
 
 	i = 0;
-	while (file[i])
+	while (file[i] && file[i + 1])
 	{
-		while(file[i] != '\n' && file[i])
+		while (file[i] != '\n' && file[i])
 			i++;
-		if ((file[i + 1] == '1' || file[i + 1] == ' ') && file[i])
+		if (file[i] && file[i + 1] && (file[i + 1] == '1' || file[i + 1] == ' '))
 			break ;
 		i++;
 	}
-	while (file[i])
+	while (file[i] && file[i + 1])
 	{
-		while(file[i] != '\n' && file[i])
+		while (file[i] && file[i] != '\n')
 			i++;
-		if (file[i + 1] == '\n' && file[i])
+		if (file[i] && file[i + 1] && file[i + 1] == '\n')
 			return (TRUE);
 		i++;
 	}
