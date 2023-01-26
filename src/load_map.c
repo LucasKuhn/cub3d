@@ -6,7 +6,7 @@
 /*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:43:12 by lalex-ku          #+#    #+#             */
-/*   Updated: 2023/01/25 14:55:44 by lalex-ku         ###   ########.fr       */
+/*   Updated: 2023/01/25 20:00:53 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ static int	has_line_break_in_map_area(char *file)
 	i = 0;
 	while (file[i] && file[i + 1])
 	{
-		while (file[i] != '\n' && file[i])
+		while (file[i] && file[i] != '\n')
 			i++;
 		if (file[i] && file[i + 1] && (file[i + 1] == '1' || file[i + 1] == ' '))
 			break ;
-		i++;
+		if (file[i])
+			i++;
 	}
 	while (file[i] && file[i + 1])
 	{
@@ -45,7 +46,8 @@ static int	has_line_break_in_map_area(char *file)
 			i++;
 		if (file[i] && file[i + 1] && file[i + 1] == '\n')
 			return (TRUE);
-		i++;
+		if (file[i])
+			i++;
 	}
 	return (FALSE);
 }
